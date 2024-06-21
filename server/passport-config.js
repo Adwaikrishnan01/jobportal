@@ -1,5 +1,4 @@
 import passport from 'passport';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv'
 import userModel from './userModel.js';
@@ -36,21 +35,29 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "/auth/google/callback"
-}, function (accessToken, refreshToken, profile, done)  {
-    done(null, profile);
-    console.log(profile)
-           }
-));
+}, async function (accessToken, refreshToken, profile, done)  {
+    // const existingUser = await userModel.findOne({ googleId: profile.id });
+    // if (existingUser) {
+    //     return done(null, existingUser);
+    // }
+    // const user = userModel.create({
+    //     
+    //     name: profile.displayName,
+    //     emails: profile.emails,
+    //     phone:"xxxxxxxxxx",
+    //     password:"abc"      
+    // });
+    const user={id:profile.id,name:profile.displayName,email:profile.emails}
+    done(null, user);
+}));
 
-passport.serializeUser((profile, done) => {
-    done(null, profile);
-    console.log("serialiseduser",profile)   
+passport.serializeUser((user, done) => {
+    done(null, user);
 });
 
-passport.deserializeUser((profile, done) => {
+passport.deserializeUser((user, done) => {
 
-    done(null, profile);
-  
+    done(null, user);
 });
 
 export default passport;

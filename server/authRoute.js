@@ -24,17 +24,29 @@ router.get('/protected', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'You have accessed a protected route' });
 });
 
+
+
 // Google OAuth routes
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/auth/google/callback', passport.authenticate('google', 
-    { failureRedirect: '/' ,successRedirect: '/protected-route'}), (req, res) => {
-// Successful authentication, issue JWT
+    { failureRedirect: '/' ,successRedirect: '/protected-route-google'}), (req, res) => {
 
-    const token = jwt.sign({ sub: req.user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+        res.redirect('/protected-route-google'); 
 }); 
 
+router.get('/protected-route-google', (req, res) => {
+    const user = req.user;
+    if (!user) {
+        return res.status(401).json({ message: 'Unauthorized access' });
+    }
+    res.status(200).json({
+        message: 'You have accessed a protected route by Google login',
+        id:user.id,
+        name: user.name,
+        email: user.email,
+    });
+});
 
 export default router;
 
