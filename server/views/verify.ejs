@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Phone</title>
+</head>
+<body>
+    <h1>Verify Phone Number</h1>
+    <form action="/verify" method="POST">
+        <div>
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" required>
+        </div>
+        <div>
+            <label for="code">Verification Code:</label>
+            <input type="text" id="code" name="code" required>
+        </div>
+        <button type="submit">Verify</button>
+    </form>
+</body>
+</html>

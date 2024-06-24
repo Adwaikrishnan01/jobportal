@@ -2,8 +2,9 @@ import express from 'express';
 import passport from './passport-config.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { login, register } from './controllers.js';
+import { login, register, verifyPhone } from './controllers.js';
 import { authenticateJWT } from './middleware.js';
+
 
 dotenv.config();
 const router=express.Router()
@@ -23,8 +24,6 @@ router.post('/login', login)
 router.get('/protected', authenticateJWT, (req, res) => {
     res.status(200).json({ message: 'You have accessed a protected route' });
 });
-
-
 
 // Google OAuth routes
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -47,6 +46,14 @@ router.get('/protected-route-google', (req, res) => {
         email: user.email,
     });
 });
+
+//verify phoneno twilio
+router.get('/verify', (req, res) => {
+    res.render('verify');
+});
+
+router.post('/verify', verifyPhone);
+
 
 export default router;
 

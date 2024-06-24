@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone_verified: {
+      type: Boolean,
+     
+    },
   },
   { timestamps: true }
 );
