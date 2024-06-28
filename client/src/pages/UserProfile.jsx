@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchCurrentUser, logoutUser } from '../redux/slices/authSlice';
 import Button from '../components/Button';
 import { FaRegEdit } from 'react-icons/fa';
+import { openModal } from '../redux/slices/modalSlice';
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -22,9 +23,6 @@ const UserProfile = () => {
     return <div>Loading user data...</div>;
   }
 
-  function handleverifyPhone(){
-
-  }
 
   return (
     <section className='relative w-full bg-fuchsia-100 py-14 min-h-screen'>
@@ -43,6 +41,7 @@ const UserProfile = () => {
         {user.phone_verified===true?"Verified":<>("not verified ")</>}</>
           :"not verified"}</p>
          <p> User Type : <>{user.role}</></p>
+         <Button outline small label={"Update profile"} icon={FaRegEdit} onClick={()=>{dispatch(openModal('updateProfile'))}}/>
       </div>
       </div>
       {/* sidepart */}
@@ -54,10 +53,11 @@ const UserProfile = () => {
         <div className='flex justify-between items-center space-x-6'>
            <div>Phone-no : </div>
            <div className='text-fuchsia-700 font-thin'>{user.phone_verified?"verified":
-           (<div onClick={handleverifyPhone()}>Verify</div>)}</div>
+           (<Button small outline label={"verify"} onClick={()=>{dispatch(openModal('verifyPhone'))}}/>)}</div>
         </div>
         <div className='flex justify-between items-center space-x-6'>
-        <div>Edit user :</div><div><Button outline small label={user.role} onClick={()=>{}} /></div>
+        <div>Edit user :</div><div><Button outline small label={user.role} 
+        onClick={()=>{dispatch(openModal('employer'))}} /></div>
         </div>
         </div>
       </div></div>

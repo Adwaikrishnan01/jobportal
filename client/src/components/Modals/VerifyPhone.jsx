@@ -13,11 +13,7 @@ const VerifyPhoneModal = () => {
 
   return (
     <Modal name="verifyPhone" title="Verify Phone Number">
-      <Input
-        className="form-input mb-4"
-        label={"Name"}
-        {...register('name')}
-      />
+      
       <Input
         className="form-input mb-4"
         label={"Phone Number"}
@@ -31,8 +27,8 @@ const VerifyPhoneModal = () => {
       <button
         type="submit"
         onClick={handleSubmit(onSubmit)}
-        className="bg-blue-500 text-white p-2 rounded-md w-full hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-      >
+        className="w-full bg-fuchsia-700 text-white font-bold py-2 px-4 rounded-lg 
+        hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-opacity-50">
         Submit
       </button>
     </Modal>

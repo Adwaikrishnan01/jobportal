@@ -11,7 +11,7 @@ const Button= ({label,onClick,disabled,outline,small,icon:Icon}) => {
               ${small? 'font-light':'font-bold'}
               ${small? 'text-sm':'text-md'}`}>
                   {Icon&&
-                  (<Icon size={26} className="absolute"></Icon>)}
+                  (<Icon size={20} className="absolute"></Icon>)}
               {label}
               </button>
     )
