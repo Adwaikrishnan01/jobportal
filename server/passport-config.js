@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv'
-import userModel from './userModel.js';
+import userModel from './models/userModel.js';
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt'
 

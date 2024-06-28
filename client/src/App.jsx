@@ -3,24 +3,37 @@ import Register from './pages/Register'
 import Login from './pages/Login.jsx'
 import Navbar from './components/navbar/Navbar.jsx';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './redux/store/store.js';
 import UserProfile from './pages/UserProfile';
 import PrivateRoute from './components/PrivateRoute';
+import CreateJobPosting from './pages/PostJobs.jsx';
+import { useEffect, useState } from 'react';
+import { fetchCurrentUser } from './redux/slices/authSlice.js';
 
 const App = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated, user, status } = useSelector((state) => state.auth);
+  console.log("currentUser",user)
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchCurrentUser());
+    }
+  }, [isAuthenticated, dispatch]);
+
   return (
-    <Provider store={store}>
+    
       <Router>
-        <Navbar/>
+        <Navbar user={user}/>
         <Routes>
         <Route path="/" element={ <Home/> } />
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={ <Register/> } />
           <Route path="/profile" element={<PrivateRoute><UserProfile/></PrivateRoute>} />
+          <Route path="/post-job" element={<CreateJobPosting/>}/>
         </Routes>
       </Router> 
-    </Provider>
+ 
   );
 };
 export default App;

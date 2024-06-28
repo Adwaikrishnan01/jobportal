@@ -6,6 +6,12 @@ import Input from '../components/Input.jsx';
 import { FcGoogle } from "react-icons/fc";
 import Button from '../components/Button.jsx';
 import { useNavigate } from 'react-router-dom';
+import GoogleLogin from '../components/GoogleLoginbtn.jsx'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,27 +22,37 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { token } = await login(email, password);
-      dispatch(loginUser(token));
+      const response = await login(email, password);
+      const { accessToken, refreshToken, user } = response;
+      dispatch(loginUser({ accessToken, refreshToken, user }));
+      navigate('/')
+      toast.success("Successfuly logged in")
+    
     } catch (error) {
       console.error('Login error:', error);
+      toast.error("Login failed. Please try again.");
     }
+    
+    
   };
 
-  const handleGoogleLogin = async (googleUser) => {
+   const handleGoogleLogin = async () => {
     try {
-      const tokenId = googleUser.getAuthResponse().id_token;
-      const { token } = await googleLogin(tokenId);
-      dispatch(loginUser(token));
+      console.log("googletap")
+      // const tokenId = googleUser.getAuthResponse().id_token;
+      const  gresponse= await googleLogin();
+      console.log("googleres",gresponse)
+     // dispatch(loginUser(accessToken));
     } catch (error) {
       console.error('Google login error:', error);
     }
   };
 
+ 
   return (
     <section className='relative w-full bg-fuchsia-100 py-20 min-h-screen'>
     <div className="max-w-2xl sm:mx-auto mx-3 px-4 shadow-sm bg-white py-6 rounded-md">
-      <div className='mx-6 md:mx-12 my-8'>
+      <div className='mx-6 md:mx-12 my-8'><ToastContainer position='top-center'/>
       <form onSubmit={handleLogin}>
         <h2 className='text-3xl font-bold text-center text-fuchsia-800 mb-10'>Login</h2>
       <Input
@@ -58,10 +74,13 @@ const Login = () => {
         </div>  
     </form>
 
-    <Button icon={FcGoogle} label={"Login with google"} 
-        onClick={() => signIn('google')} outline/>
+    {/* <Button icon={FcGoogle} label={"Login with google"} 
+        onClick={() => {handleGoogleLogin()}} outline/> */}
+      <GoogleLogin label={"Login with Google"}/>
       <div className="text-sm my-2">Don't have an account?</div>
       <Button label={"Register"} onClick={()=>{navigate('/signup')}}/>
+        
+        
       </div>
     </div>
     </section>

@@ -1,14 +1,14 @@
 import express from 'express';
-import passport from './passport-config.js';
+import passport from '../passport-config.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { login, register, verifyPhone } from './controllers.js';
-import { authenticateJWT } from './middleware.js';
+import { getCurrentUser, googleLogin, login, refreshToken, register, verifyPhone } from '../controllers/userControllers.js';
+import authMiddleware from '../middleware.js';
 
 
 dotenv.config();
 const router=express.Router()
-
+const jsonParser = express.json();
 router.get('/signup', (req, res) => {
     res.render('signup');
 });
@@ -21,31 +21,31 @@ router.get('/login', (req, res) => {
 router.post('/login', login)
 
 // Protected route with JWT
-router.get('/protected', authenticateJWT, (req, res) => {
+router.get('/protected', authMiddleware, (req, res) => { 
     res.status(200).json({ message: 'You have accessed a protected route' });
 });
 
 // Google OAuth routes
+router.post('/auth/google/client', googleLogin); //client
+
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/auth/google/callback', passport.authenticate('google', 
-    { failureRedirect: '/' ,successRedirect: '/protected-route-google'}), (req, res) => {
+    { failureRedirect: '/'}), (req, res) => {
 
-        res.redirect('/protected-route-google'); 
+        const accessToken = jwt.sign(
+            { id: req.user.id, email: req.user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+          );
+          res.json({accessToken})
+          
 }); 
 
-router.get('/protected-route-google', (req, res) => {
-    const user = req.user;
-    if (!user) {
-        return res.status(401).json({ message: 'Unauthorized access' });
-    }
-    res.status(200).json({
-        message: 'You have accessed a protected route by Google login',
-        id:user.id,
-        name: user.name,
-        email: user.email,
-    });
-});
+router.get('/currentuser',authMiddleware,getCurrentUser);
+
+router.post('/refresh-token', express.json(), refreshToken);
+
 
 //verify phoneno twilio
 router.get('/verify', (req, res) => {

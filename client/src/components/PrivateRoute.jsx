@@ -1,22 +1,20 @@
-import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
-
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Navigate to="/login" />
-        )
-      }
-    />
-  );
+const PrivateRoute = ({ children}) => {
+  const navigate=useNavigate()
+  const { user,isAuthenticated } = useSelector((state) => state.auth);
+  if(!user){
+    useEffect(()=>{
+      toast('Please login to continue');
+      navigate('/login') 
+    },[])
+  }
+  else{
+    return children
+  }
 };
 
 export default PrivateRoute;

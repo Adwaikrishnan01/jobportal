@@ -3,7 +3,7 @@ const MenuItem = ({onClick,label}) => {
   return (
     <div onClick={onClick} 
     className="px-8 py-3 hover:bg-fuchsia-100
-    transition font-semibold">{label}
+    transition font-semibold w-[200px]">{label}
     </div>
   )
 }

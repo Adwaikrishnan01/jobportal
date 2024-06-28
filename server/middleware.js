@@ -1,21 +1,29 @@
-// Middleware to protect routes
 import jwt from 'jsonwebtoken'
 
-export const authenticateJWT = (req, res, next) => {
+import userModel from './models/userModel.js';
+
+
+const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (authHeader) {
         const token = authHeader.split(' ')[1];
-
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        const decoded= jwt.verify(token, process.env.JWT_SECRET)
+             
+         jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
             if (err) {
                 return res.sendStatus(403);
             }
 
             req.user = user;
+            console.log("requser",req.user)
+            req.userId = decoded.id; 
             next();
         });
     } else {
         res.sendStatus(401);
     }
 };
+export default authMiddleware;
+
+
