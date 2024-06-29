@@ -36,7 +36,7 @@ const CreateJobPosting = () => {
     const result = await createJobPostingAction(formData);
     setMessage(result.message);
     if (result.success) {
-      e.target.reset(); // Reset form after successful submission
+      e.target.reset(); 
     }
   };
 

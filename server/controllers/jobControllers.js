@@ -52,3 +52,5 @@ export const createJobPosting = async (req, res) => {
       res.status(500).json({ message: 'Error fetching job postings', error: error.message });
     }
   };
+
+  

@@ -2,7 +2,7 @@ import express from 'express';
 import passport from '../passport-config.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { getCurrentUser, googleLogin, login, refreshToken, register, verifyPhone } from '../controllers/userControllers.js';
+import { getCurrentUser, googleLogin, login, refreshToken, register, updateUserProfile, updateUserRoleToEmployer, verifyPhone, verifyPhoneRequest } from '../controllers/userControllers.js';
 import authMiddleware from '../middleware.js';
 
 
@@ -46,13 +46,15 @@ router.get('/currentuser',authMiddleware,getCurrentUser);
 
 router.post('/refresh-token', express.json(), refreshToken);
 
+router.post('/profile/changeuser',authMiddleware,updateUserRoleToEmployer)
 
+router.put('/update/profile',authMiddleware,updateUserProfile);
 //verify phoneno twilio
 router.get('/verify', (req, res) => {
     res.render('verify');
 });
-
-router.post('/verify', verifyPhone);
+router.post('/verifyrequest',authMiddleware, verifyPhoneRequest);
+router.post('/verify',authMiddleware, verifyPhone);
 
 
 export default router;

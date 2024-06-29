@@ -33,7 +33,7 @@ const Register = () => {
       e.preventDefault();
       try {
         const response = await axios.post(`${API_URL}/signup`, formData);
-        console.log('Form submitted successfully:', response.data);
+      
       } catch (error) {
         console.error('Error submitting form:', error);
       }

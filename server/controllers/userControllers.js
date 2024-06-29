@@ -66,27 +66,58 @@ export const login = (req, res, next) => {
         });
     })(req, res, next);
 };
- 
+//verify request 
+
+export const verifyPhoneRequest=async(req,res)=>{
+  const {phone}=req.body
+  console.log(phone)
+  if (!phone) {
+    return res.status(400).json({ error: 'Phone number is required' });
+  }
+
+  try {
+    await client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+      .verifications.create({ to: `+91${phone}`, channel: 'sms' });
+    
+    res.status(200).json({ message: 'Verification request sent successfully' });
+  } catch (error) {
+    console.error("Error in Twilio verification:", error);
+    res.status(500).json({ error: 'Failed to send verification request' });
+  }
+};
+
 //verify phoneno
 
 export const verifyPhone=async (req, res) => {
-    const { phone, code } = req.body;
-    try {
-        await client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
-            .verifications.create({ to: `+91 ${phone}`, channel: 'sms' });
-        const verification = await client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
-            .verificationChecks
-            .create({ to: `+91 ${phone}`, code: code });
+  const { code } = req.body;
+  const userId = req.user.id;
 
-        if (verification.status === 'approved') {
-            await userModel.updateOne({ phone: phone }, { phone_verified: true });
-            res.status(200).json({ message: 'Phone number verified' });
-        } else {
-            res.status(400).json({ message: 'Invalid verification code' });
-        }
-    } catch (err) {
-        res.status(500).json({ message: 'Error verifying code', error: err });
-    }
+  try {
+      const user = await userModel.findById(userId);
+      
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      const verification = await client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+          .verificationChecks
+          .create({ to: `+91${user.phone}`, code: code });
+      
+      if (verification.status === 'approved') {
+          try {
+              user.phone_verified = true;
+              await user.save();
+              res.status(200).json({ message: 'Phone number verified successfully' });
+          } catch (dbError) {
+              console.error('Database update error:', dbError);
+              res.status(500).json({ message: 'Error updating user in database', error: dbError.message });
+          }
+      } else {
+          res.status(400).json({ message: 'Invalid verification code' });
+      }
+  } catch (err) {
+      console.error('Verification error:', err);
+      res.status(500).json({ message: 'Error during verification process', error: err.message });
+  }
 };
 // get current user
 export const getCurrentUser = async (req, res) => {
@@ -168,5 +199,72 @@ export const refreshToken = async (req, res) => {
     } catch (error) {
       console.error('Error logging in with Google:', error);
       res.status(500).json({ message: 'Error logging in with Google' });
+    }
+  };
+
+  export const updateUserRoleToEmployer = async (req, res) => {
+    const { companyName, companyRole } = req.body;
+    console.log()
+    const userId = req.user.id; 
+  
+    if (!companyName || !companyRole) {
+      return res.status(400).json({ message: 'Company name and role are required' });
+    }
+  
+    try {
+      const user = await userModel.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      user.role = 'employer';
+      user.companyName = companyName;
+      user.companyRole = companyRole;
+  
+      await user.save();
+  
+      res.status(200).json({ message: 'User role updated to employer successfully', user });
+    } catch (error) {
+      console.error('Error updating user role:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  };
+
+  //update user profile
+
+  export const updateUserProfile = async (req, res) => {
+    try {
+      const userId = req.user.id; 
+      const { name, phone, skills, gender, age, experience } = req.body;
+  
+      // Find the user by ID and update
+      const updatedUser = await userModel.findByIdAndUpdate(
+        userId,
+        {
+          name,
+          phone,
+          skills,
+          gender,
+          age,
+          experience
+        },
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      const userResponse = updatedUser.toObject();
+      delete userResponse.password;
+  
+      res.status(200).json({
+        message: 'Profile updated successfully',
+        user: userResponse
+      });
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      res.status(500).json({ message: 'Error updating profile', error: error.message });
     }
   };

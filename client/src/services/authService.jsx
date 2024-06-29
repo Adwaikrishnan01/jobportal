@@ -17,6 +17,5 @@ export const googleLogin = async () => {
 };
 
 export const logout = (dispatch) => {
-  console.log("logouttap")
   dispatch(logoutUser())
 };

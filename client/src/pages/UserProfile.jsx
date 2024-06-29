@@ -4,7 +4,8 @@ import { fetchCurrentUser, logoutUser } from '../redux/slices/authSlice';
 import Button from '../components/Button';
 import { FaRegEdit } from 'react-icons/fa';
 import { openModal } from '../redux/slices/modalSlice';
-
+import { ToastContainer, toast } from 'react-toastify';
+import axios from '../utils/AxiosConfig'
 const UserProfile = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, status } = useSelector((state) => state.auth);
@@ -22,11 +23,33 @@ const UserProfile = () => {
   if (status === 'loading') {
     return <div>Loading user data...</div>;
   }
-
+const handleVerify=async()=>{
+  const phone=user.phone
+   if(!phone){
+    toast.info('Please add phone no')
+   }
+   if(user?.phone_verified){
+    toast.success('Your phone no is already verified')
+   }
+   if(!user.phone_verified){
+    try{
+      const response=await axios.post('/verifyrequest',{phone})
+      if (response.status === 200) {
+        dispatch(openModal('verifyPhone'))
+        toast.success("Verification request send")  
+      }
+        else{
+          toast.error('error in sending request')
+        }
+    }catch(error){
+      console.log("errror in request",error)
+    }
+   }
+}
 
   return (
     <section className='relative w-full bg-fuchsia-100 py-14 min-h-screen'>
-    
+    <ToastContainer/>
         <div className="max-w-5xl sm:mx-auto mx-3 md:px-8 px-2 shadow-sm bg-white py-6 rounded-md">  
         
       <h2 className='text-2xl font-bold text-center text-fuchsia-800 mb-4'>{user.name}</h2>
@@ -36,7 +59,7 @@ const UserProfile = () => {
       <div className='text-sm text-gray-600 space-y-2'>
         <p>User name : {user.name}</p>
         <p>User email : {user.email}</p>
-        <p>User phone : {user.phoneno?user.phone.no:"not found"}</p>
+        <p>User phone : {user.phone?user.phone:"not found"}</p>
         <p>Phone verified: {user.phone_verified ?<>
         {user.phone_verified===true?"Verified":<>("not verified ")</>}</>
           :"not verified"}</p>
@@ -46,14 +69,14 @@ const UserProfile = () => {
       </div>
       {/* sidepart */}
       <div className="px-6 py-4 bg-fuchsia-100 rounded-md">
-        <div className='mx-auto w-16 my-2'><img className="rounded-full" src='/public/avatar.jpg'/></div>
+        <div className='mx-auto w-16 my-2'><img className="rounded-full" src='/avatar.jpg'/></div>
         <hr />
         <div className="mx-auto space-y-2 mt-3">
          
         <div className='flex justify-between items-center space-x-6'>
            <div>Phone-no : </div>
            <div className='text-fuchsia-700 font-thin'>{user.phone_verified?"verified":
-           (<Button small outline label={"verify"} onClick={()=>{dispatch(openModal('verifyPhone'))}}/>)}</div>
+           (<Button small outline label={"verify"} onClick={()=>{handleVerify()}}/>)}</div>
         </div>
         <div className='flex justify-between items-center space-x-6'>
         <div>Edit user :</div><div><Button outline small label={user.role} 

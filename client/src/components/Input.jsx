@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-const Input = ({ label, name, type = 'text', value, onChange }) => {
+const Input = ({ label, name, type = 'text', value, onChange, readOnly, required }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -18,6 +18,8 @@ const Input = ({ label, name, type = 'text', value, onChange }) => {
           type={showPassword && type === 'password' ? 'text' : type}
           value={value}
           onChange={onChange}
+          readOnly={readOnly}
+          required={required}
           className="appearance-none border-b-2 border-fuchsia-300 w-full pb-2
            text-gray-700 leading-tight focus:outline-none focus:border-fuchsia-600 mb-2"
         />
