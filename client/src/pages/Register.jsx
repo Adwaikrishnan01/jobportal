@@ -6,10 +6,11 @@ import {useNavigate} from 'react-router-dom'
 import CustomGoogleLogin from '../components/GoogleLoginbtn'
 import axios from 'axios'
 import { API_URL } from '../utils/API'
+import { toast } from 'react-toastify'
 
 
 const Register = () => {
- 
+ const navigate=useNavigate()
     const [formData, setFormData] = useState({
       name: '',
       age: '',
@@ -33,13 +34,13 @@ const Register = () => {
       e.preventDefault();
       try {
         const response = await axios.post(`${API_URL}/signup`, formData);
-      
+          navigate('/login')
+          toast.success("User registered successfully")
       } catch (error) {
         console.error('Error submitting form:', error);
+        toast.error("Error in creating user")
       }
     };
-
-  const navigate=useNavigate()
   return (
     <section className='relative w-full bg-fuchsia-100 py-20 min-h-screen'>
       <div className="max-w-3xl sm:mx-auto mx-3 px-4 shadow-sm bg-white py-6 rounded-md">

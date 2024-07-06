@@ -4,7 +4,7 @@ import { FcGoogle } from 'react-icons/fc';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { API_URL } from '../utils/API';
 import { loginUser, setUser } from '../redux/slices/authSlice';
 
@@ -56,7 +56,7 @@ const navigate=useNavigate()
 
   return (<>
   <Button icon={FcGoogle} label={label} outline onClick={()=>{login()}}/>
-    <ToastContainer />
+    
     </>
    
   );

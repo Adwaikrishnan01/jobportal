@@ -5,7 +5,7 @@ import axios from '../../utils/AxiosConfig'
 import { useSelector, useDispatch } from 'react-redux';
 import { closeModal } from '../../redux/slices/modalSlice';
 import { fetchCurrentUser } from '../../redux/slices/authSlice';
-import { ToastContainer, toast } from 'react-toastify';
+import {toast } from 'react-toastify';
 
 const VerifyPhoneModal = () => {
   const { isAuthenticated, user, status } = useSelector((state) => state.auth);
@@ -73,7 +73,7 @@ const VerifyPhoneModal = () => {
         hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-opacity-50">
         Send
       </button></form>
-      <ToastContainer/>
+
     </Modal>
   );
 };

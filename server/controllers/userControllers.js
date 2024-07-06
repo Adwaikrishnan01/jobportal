@@ -18,7 +18,8 @@ export const register = expressAsyncHandler(async (req, res) => {
             email,
             password: hashedpassword, 
             phone,
-            phone_verified: false
+            phone_verified: false,
+            initial_login:true
         }).then((createdUser) => {
             res.status(201).json({
                 _id: createdUser._id,
@@ -26,6 +27,7 @@ export const register = expressAsyncHandler(async (req, res) => {
                 email: createdUser.email, 
                 phone: createdUser.phone,
                 phone_verified:createdUser.phone_verified,
+                initial_login:createdUser.initial_login,
                 success: true,
                 message: "User Registerd Successfully",
             })   
@@ -221,7 +223,7 @@ export const refreshToken = async (req, res) => {
       user.role = 'employer';
       user.companyName = companyName;
       user.companyRole = companyRole;
-  
+      user.initial_login=false;
       await user.save();
   
       res.status(200).json({ message: 'User role updated to employer successfully', user });
@@ -268,3 +270,19 @@ export const refreshToken = async (req, res) => {
       res.status(500).json({ message: 'Error updating profile', error: error.message });
     }
   };
+
+  export const initialController=async(req,res)=>{
+    try{
+      const userId=req.user.id;
+      const updatedUser=await userModel.findByIdAndUpdate(userId,{initial_login:false})
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json({
+        message: 'Profile updated successfully',
+        user: updatedUser
+      });
+    }catch(error){
+      console.log(error)
+    }
+  }

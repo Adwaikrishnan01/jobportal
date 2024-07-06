@@ -10,25 +10,17 @@ import PrivateRoute from './components/PrivateRoute';
 import CreateJobPosting from './pages/PostJobs.jsx';
 import { useEffect, useState } from 'react';
 import { fetchCurrentUser } from './redux/slices/authSlice.js';
+import Onboarding from './pages/Onboarding.jsx';
 
 const App = () => {
-  const dispatch = useDispatch();
-  const { isAuthenticated, user, status } = useSelector((state) => state.auth);
-  console.log("currentUser",user)
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(fetchCurrentUser());
-    }
-  }, [isAuthenticated, dispatch]);
-
   return (
-    
       <Router>
-        <Navbar user={user}/>
+        <Navbar/>
         <Routes>
         <Route path="/" element={ <Home/> } />
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={ <Register/> } />
+          <Route path="/onboarding" element={ <PrivateRoute><Onboarding/></PrivateRoute> } />
           <Route path="/profile" element={<PrivateRoute><UserProfile/></PrivateRoute>} />
           <Route path="/post-job" element={<CreateJobPosting/>}/>
         </Routes>

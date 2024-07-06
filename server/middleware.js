@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import userModel from './models/userModel.js';
 
 
-const authMiddleware = async (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (authHeader) {
@@ -23,6 +23,29 @@ const authMiddleware = async (req, res, next) => {
         res.sendStatus(401);
     }
 };
-export default authMiddleware;
+
+export const isEmployer = async (req, res, next) => {
+    try {
+    
+      const userId = req.user.id;
+
+      const user = await userModel.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      if (user.role !== 'employer') {
+        return res.status(403).json({ message: 'Access denied. Employer role required.' });
+      }
+
+      req.employer = user;
+      next();
+    } catch (error) {
+      console.error('Error in isEmployer middleware:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
 
 

@@ -1,20 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const PrivateRoute = ({ children}) => {
-  const navigate=useNavigate()
+  
   const { user,isAuthenticated } = useSelector((state) => state.auth);
-  if(!user){
-    useEffect(()=>{
-      toast('Please login to continue');
-      navigate('/login') 
-    },[])
+  if(user){
+   return children
   }
-  else{
-    return children
+  if (!isAuthenticated) {
+    return <div className='text-bold text-red-400 m-5'>Please login !!</div>;
   }
+  return(toast.error("Please login to continue"))
+    
 };
 
 export default PrivateRoute;

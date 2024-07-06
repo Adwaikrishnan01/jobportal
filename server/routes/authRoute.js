@@ -2,8 +2,8 @@ import express from 'express';
 import passport from '../passport-config.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { getCurrentUser, googleLogin, login, refreshToken, register, updateUserProfile, updateUserRoleToEmployer, verifyPhone, verifyPhoneRequest } from '../controllers/userControllers.js';
-import authMiddleware from '../middleware.js';
+import { getCurrentUser, googleLogin, initialController, login, refreshToken, register, updateUserProfile, updateUserRoleToEmployer, verifyPhone, verifyPhoneRequest } from '../controllers/userControllers.js';
+import {authMiddleware} from '../middleware.js';
 
 
 dotenv.config();
@@ -56,6 +56,6 @@ router.get('/verify', (req, res) => {
 router.post('/verifyrequest',authMiddleware, verifyPhoneRequest);
 router.post('/verify',authMiddleware, verifyPhone);
 
-
+router.put('/initial',authMiddleware,initialController) 
 export default router;
 

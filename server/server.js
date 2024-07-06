@@ -36,6 +36,6 @@ app.set('views', './views');
 
 app.use(authRoute);
 app.use('/jobs',jobRoute)
-app.listen(port, () => {   
+app.listen(port, () => {    
   console.log(`Server is running on port ${port}`); 
 }); 

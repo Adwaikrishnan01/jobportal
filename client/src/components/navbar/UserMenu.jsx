@@ -10,7 +10,7 @@ const UserMenu = ({user}) => {
   const dispatch=useDispatch()
   const [open,setOpen]=useState(false);
   const logoutHandler = () => {
-    logout(dispatch);
+    logout({dispatch,navigate});
   }
    
   return (

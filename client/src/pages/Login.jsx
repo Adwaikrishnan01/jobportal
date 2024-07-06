@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { loginUser } from '../redux/slices/authSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCurrentUser, loginUser } from '../redux/slices/authSlice';
 import { login, googleLogin } from '../services/authService.jsx';
 import Input from '../components/Input.jsx';
 import { FcGoogle } from "react-icons/fc";
 import Button from '../components/Button.jsx';
 import { useNavigate } from 'react-router-dom';
 import GoogleLogin from '../components/GoogleLoginbtn.jsx'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
-
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate=useNavigate()
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (isAuthenticated &&  user) {
+      dispatch(fetchCurrentUser()).then((fetchedUser) => {
+        console.log("fetcheduser",fetchedUser)
+        if (fetchedUser.payload.initial_login === true) {
+          navigate('/onboarding');
+        } else {
+          navigate('/');
+        }
+      });
+    }
+  }, [isAuthenticated, status, user, dispatch, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,9 +36,9 @@ const Login = () => {
       const response = await login(email, password);
       const { accessToken, refreshToken, user } = response;
       dispatch(loginUser({ accessToken, refreshToken, user }));
-      navigate('/')
-      toast.success("Successfuly logged in")
-    
+      toast.success("Successfully logged in");
+      
+
     } catch (error) {
       console.error('Login error:', error);
       toast.error("Login failed. Please try again.");
@@ -52,7 +63,7 @@ const Login = () => {
   return (
     <section className='relative w-full bg-fuchsia-100 py-20 min-h-screen'>
     <div className="max-w-2xl sm:mx-auto mx-3 px-4 shadow-sm bg-white py-6 rounded-md">
-      <div className='mx-6 md:mx-12 my-8'><ToastContainer position='top-center'/>
+      <div className='mx-6 md:mx-12 my-8'>
       <form onSubmit={handleLogin}>
         <h2 className='text-3xl font-bold text-center text-fuchsia-800 mb-10'>Login</h2>
       <Input

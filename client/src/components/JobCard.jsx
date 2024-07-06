@@ -1,7 +1,14 @@
 import React from 'react';
 import Button from './Button';
+import { useSelector } from 'react-redux';
 
 const JobCard = ({jobPosting}) => {
+  const { user } = useSelector((state) => state.auth);
+  let role
+  if(user)
+   role=user.role
+  else
+   role='candidate'
   const getDaysAgo = (date) => {
     const postedDate = new Date(date);
     const currentDate = new Date();
@@ -20,7 +27,7 @@ const JobCard = ({jobPosting}) => {
           </div>
         </div>
         <div className="bg-purple-600 w-8 h-8 flex items-center justify-center text-white font-bold">
-          {/* logo or default letter*/ }
+          {jobPosting.companyName.trim()[0]}
         </div>
       </div>
       
@@ -61,8 +68,7 @@ const JobCard = ({jobPosting}) => {
       <div className="mt-4 flex justify-between items-center text-sm">
         <span className="text-gray-500">{getDaysAgo(jobPosting.createdAt)}</span>
         <div className="space-x-4">
-          
-          <Button label={"Apply"} onClick={()=>{}}/>
+          {role==='employer'?'info':<Button label={"Apply"} outline onClick={()=>{}}/>}
         </div>
       </div>
     </div>

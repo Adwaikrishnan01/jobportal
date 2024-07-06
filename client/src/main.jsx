@@ -8,14 +8,20 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import EmployerModal from './components/Modals/EmployerModal.jsx'
 import UpdateProfileModal from './components/Modals/ProfileUpdate.jsx'
 import VerifyPhoneModal from './components/Modals/VerifyPhone.jsx'
+import { ToastContainer } from 'react-toastify'
+import PostJobModal from './components/Modals/PostJobModal.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}> 
    <Provider store={store}>
-    <React.StrictMode>
+      <React.StrictMode>
+      <ToastContainer position='top-center'/>
       <EmployerModal/>
       <UpdateProfileModal/>
       <VerifyPhoneModal/>
+      <PostJobModal/>
       <App />
-    </React.StrictMode></Provider></GoogleOAuthProvider>
+      </React.StrictMode>
+   </Provider>
+  </GoogleOAuthProvider>
 )

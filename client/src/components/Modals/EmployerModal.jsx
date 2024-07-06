@@ -6,9 +6,11 @@ import {toast} from 'react-toastify'
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../redux/slices/modalSlice';
 import { fetchCurrentUser } from '../../redux/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const EmployerModal = () => {
   const dispatch=useDispatch()
+  
   const [formData, setFormData] = useState({
     companyName: '',
     companyRole: ''
@@ -34,8 +36,8 @@ const EmployerModal = () => {
   
       if (response.status === 200) {
         toast.success("User updated successfully")
-        dispatch(fetchCurrentUser())
         dispatch(closeModal('employer'))
+        window.location.href = '/';
         
       } else {
         console.error('Error updating user role:', response.statusText);

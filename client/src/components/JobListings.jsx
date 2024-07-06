@@ -2,39 +2,29 @@ import JobCard from "./JobCard";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../utils/API';
-const  JobListings= () => {
- 
-  const [jobPostings, setJobPostings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
- 
-  useEffect(() => {
-    const fetchJobPostings = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/jobs/getalljobs`);
-      
-        const {data} =response
-        
-        setJobPostings(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchJobPostings();
-  }, []);
-            if (loading) return <p>Loading...</p>;
-            if (error) return <p>Error: {error}</p>;
+import SkeletonJobCard from "./loading/SkeletonJobCard";
+const  JobListings= ({ jobs, isLoading, error }) => {
+            if (isLoading) 
+              return (
+                <div className="w-4/6 px-3 py-3">
+               <SkeletonJobCard/>
+               <SkeletonJobCard/>
+               <SkeletonJobCard/>
+               <SkeletonJobCard/>
+               <SkeletonJobCard/>
+               <SkeletonJobCard/>
+               </div>
+            )
+            if (error) 
+              return <p className="text-gray-800 m-5"> {error}</p>;
     return ( 
 
         <div className="w-4/6 px-3 py-3">
-           {jobPostings.map((jobPosting)=>(
+           {jobs.map((jobPosting)=>(
             <JobCard jobPosting={jobPosting} key={jobPosting._id}/>
            ))
             
-           }
+           }          
         </div>
      );
 }

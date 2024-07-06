@@ -33,6 +33,9 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
      
     },
+    initial_login:{
+      type:Boolean
+    },
     age: {
       type: Number,
       min: 0

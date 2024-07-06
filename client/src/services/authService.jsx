@@ -1,7 +1,5 @@
-// services/authService.js
 import axios from '../utils/AxiosConfig';
 import { logoutUser } from '../redux/slices/authSlice';
-import { useDispatch } from 'react-redux';
 import axio from 'axios'
 
 const API_URL = 'http://localhost:3000';
@@ -16,6 +14,7 @@ export const googleLogin = async () => {
   return response.data;
 };
 
-export const logout = (dispatch) => {
+export const logout = ({dispatch,navigate}) => {
   dispatch(logoutUser())
+  navigate('/')
 };
