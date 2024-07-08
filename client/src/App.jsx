@@ -11,6 +11,7 @@ import CreateJobPosting from './pages/PostJobs.jsx';
 import { useEffect, useState } from 'react';
 import { fetchCurrentUser } from './redux/slices/authSlice.js';
 import Onboarding from './pages/Onboarding.jsx';
+import Feeds from './pages/Feeds.jsx';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/onboarding" element={ <PrivateRoute><Onboarding/></PrivateRoute> } />
           <Route path="/profile" element={<PrivateRoute><UserProfile/></PrivateRoute>} />
           <Route path="/post-job" element={<CreateJobPosting/>}/>
+          <Route path="/feeds" element={ <Feeds/> } />
         </Routes>
       </Router> 
  

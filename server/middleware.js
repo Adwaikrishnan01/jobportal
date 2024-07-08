@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken'
 
 import userModel from './models/userModel.js';
-
+import multer from 'multer'
+import path from 'path'
 
 export const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -48,4 +49,23 @@ export const isEmployer = async (req, res, next) => {
   };
 
 
+  
+
+export const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 6 * 1024 * 1024,
+  },
+  fileFilter: function (req, file, cb) {
+    console.log('File in fileFilter:', file);
+    const filetypes = /pdf|doc|docx/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb('Error: Allow only .pdf, .doc, .docx files!');
+    }
+  },
+});
 

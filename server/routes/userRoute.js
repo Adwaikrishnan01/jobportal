@@ -2,8 +2,10 @@ import express from 'express';
 import passport from '../passport-config.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { getCurrentUser, googleLogin, initialController, login, refreshToken, register, updateUserProfile, updateUserRoleToEmployer, verifyPhone, verifyPhoneRequest } from '../controllers/userControllers.js';
-import {authMiddleware} from '../middleware.js';
+import { dowmloadResume, getCurrentUser, googleLogin, initialController, login, refreshToken, 
+        register, updateUserProfile, updateUserRoleToEmployer, uploadResume, verifyPhone, 
+        verifyPhoneRequest } from '../controllers/userControllers.js';
+import {authMiddleware, upload} from '../middleware.js';
 
 
 dotenv.config();
@@ -57,5 +59,9 @@ router.post('/verifyrequest',authMiddleware, verifyPhoneRequest);
 router.post('/verify',authMiddleware, verifyPhone);
 
 router.put('/initial',authMiddleware,initialController) 
+
+router.post('/upload-resume',upload.single('resume'),authMiddleware, uploadResume);
+
+router.get('/downloadResume', authMiddleware, dowmloadResume);
 export default router;
 

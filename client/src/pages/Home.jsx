@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import JobListings from '../components/JobListings'
 import Sidebar from '../components/sidebar/SideBar'
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCurrentUser } from '../redux/slices/authSlice';
 import 'react-toastify/dist/ReactToastify.css';
 import { API_URL } from '../utils/API';
 import axios from 'axios'
@@ -56,8 +54,15 @@ const Home = () => {
     };
     const clearFilters=()=>{
       filteredJobs('')
+      setFilters({
+        locations: [],
+        skills: [],
+        minSalary: '',
+        maxSalary: '',
+        minExperience: '',
+        maxExperience: '',
+      })
     }
-
 
     useEffect(() => {
       const fetchJobPostings = async () => {

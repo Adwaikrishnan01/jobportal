@@ -57,8 +57,6 @@ export const createJobPosting = async (req, res) => {
   export const getJobsByEmployer = async (req, res) => {
     try {
       const userId = req.user.id;
-      console.log('Searching for jobs with userId:', userId);
-  
       if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ message: 'Invalid user ID' });
       }
@@ -67,23 +65,15 @@ export const createJobPosting = async (req, res) => {
         .sort({ createdAt: -1 })
         .select('-__v')
         .lean();
-  
-      console.log('Jobs found:', JSON.stringify(jobs, null, 2));
-  
       if (jobs.length === 0) {
-       
-        const allJobs = await Jobs.find().select('jobTitle companyName createdBy').lean();
-        console.log('Sample of all jobs in the database:', JSON.stringify(allJobs.slice(0, 5), null, 2));
-  
+       Jobs.find().select('jobTitle companyName createdBy').lean();
         return res.status(200).json({ message: 'No jobs found for this employer', jobs: [] });
       }
-  
       res.status(200).json({
         message: 'Jobs retrieved successfully',
         count: jobs.length,
         jobs: jobs
       });
-  
     } catch (error) {
       console.error('Error in getJobsByEmployer controller:', error);
       res.status(500).json({ message: 'Error retrieving jobs', error: error.message });
@@ -127,7 +117,7 @@ export const createJobPosting = async (req, res) => {
         const jobs = await Jobs.find(filter);
     
         console.log(`Found ${jobs.length} jobs`);
-    
+        
         if (jobs.length === 0) {
           return res.status(404).json({ message: 'No jobs found matching the criteria' });
         }
@@ -135,7 +125,7 @@ export const createJobPosting = async (req, res) => {
         res.status(200).json(jobs);
       } catch (error) {
         console.error('Error filtering jobs:', error);
-        res.status(500).json({ message: 'Internal server error', error: error.message });
+        res.status(500).json({ message: 'Internal server error', error: error.message });  
       }
     };
   

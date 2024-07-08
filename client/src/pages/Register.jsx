@@ -49,10 +49,10 @@ const Register = () => {
       <h2 className='text-3xl font-bold text-center text-fuchsia-800 mb-10'>Register</h2>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
         <Input label="Name" type="text" value={formData.name} onChange={handleChange} name="name" />
-        <Input label="Age" type="text" value={formData.age} onChange={handleChange} name="age" />
-        <Input label="Phone" type="text" value={formData.phone} onChange={handleChange} name="phone" />
         <Input label="Email" type="email" value={formData.email} onChange={handleChange} name="email" />
         <Input label="Password" type="password" value={formData.password} onChange={handleChange} name="password" />
+        <Input label="Age" type="text" value={formData.age} onChange={handleChange} name="age" />
+        <Input label="Phone" type="text" value={formData.phone} onChange={handleChange} name="phone" />
         <Input label="Gender" type="text" value={formData.gender} onChange={handleChange} name="gender" />
         <Input label="Skills" type="text" value={formData.skills} onChange={handleChange} name="skills" />
         <Input label="Experience" type="text" value={formData.experience} onChange={handleChange} name="experience" />

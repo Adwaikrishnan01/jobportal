@@ -3,6 +3,7 @@ import axios from 'axios';
 import Accordion from '../Accordion';
 import Input from '.././Input'
 import Button from '../Button';
+import { CiFilter } from "react-icons/ci";
 const JobFilter = ({ filters, onFilterChange,onApplyFilters ,onClearFilters}) => {
   const handleInputChange = (field, value) => {
     onFilterChange({ ...filters, [field]: value });
@@ -10,7 +11,9 @@ const JobFilter = ({ filters, onFilterChange,onApplyFilters ,onClearFilters}) =>
 
   return (
     <div>
-      <Accordion title={"Filter"} children={<>
+      <Accordion title={"Filter"} 
+      icon={<CiFilter size={20}/>}
+      children={<>
       <Input
         type="text"
         label={"Locations"}

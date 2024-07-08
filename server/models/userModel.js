@@ -72,6 +72,9 @@ const userSchema = new mongoose.Schema(
         return this.role === 'employer';
       },
     },
+    resume: {
+      type: String, 
+    },
   },
   { timestamps: true }
 );

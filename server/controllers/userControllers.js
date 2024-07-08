@@ -5,9 +5,19 @@ import passport from "../passport-config.js";
 import jwt from 'jsonwebtoken';
 import twilio from 'twilio';
 import { OAuth2Client } from "google-auth-library";
+import { upload } from "../middleware.js";
+import AWS from 'aws-sdk'
 //register
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const googleclient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION
+});
+const s3 = new AWS.S3();
+
 export const register = expressAsyncHandler(async (req, res) => {
     const { name, email, password, phone } = req.body
     const hashedpassword = await hashpassword(password)
@@ -286,3 +296,53 @@ export const refreshToken = async (req, res) => {
       console.log(error)
     }
   }
+
+  export const uploadResume=async(req,res)=>{
+        if (!req.file) {
+            return res.status(400).send('No file uploaded.');
+        }
+    
+      const params = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: `resumes/${Date.now()}-${req.file.originalname}`,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+        ACL: 'private' // or 'public-read' if you want the file to be publicly accessible
+      };
+    
+      try {
+        const userId=req.user.id;
+        const result = await s3.upload(params).promise();
+        await userModel.findByIdAndUpdate(userId,{ resume: params.Key })
+        res.status(200).json({ message: 'File uploaded successfully', fileUrl: result.Location });
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).send('Error uploading file');
+      }
+    }
+
+
+    export const dowmloadResume = async (req, res) => {
+      try {
+        const userId = req.user.id;
+        const user = await userModel.findById(userId);
+    
+        if (!user || !user.resume) {
+          return res.status(404).json({ message: 'Resume not found' });
+        }
+    
+        const params = {
+          Bucket: process.env.S3_BUCKET_NAME,
+          Key: user.resume, // Extract the key from the URL
+          Expires: 60 * 5 // URL will expire in 5 minutes
+        };
+    
+        const url = s3.getSignedUrl('getObject', params);
+        res.status(200).json({ url });
+      } catch (error) {
+        console.error('Error generating presigned URL:', error);
+        res.status(500).json({ message: 'Error generating presigned URL', error: error.message });
+      }
+    };
+    
+  
