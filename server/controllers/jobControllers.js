@@ -222,6 +222,7 @@ export const getJobApplicants = async (req, res) => {
       success: true,
       count: applications.length,
       data: applications.map(app => ({
+        id:app._id,
         applicantId: app.applicant._id,
         applicantName: app.applicant.name,
         applicantEmail: app.applicant.email,
@@ -243,10 +244,10 @@ export const getJobApplicants = async (req, res) => {
 
 export const updateApplicationStatus = async (req, res) => {
   try {
+
     const { id } = req.params;
     const { status } = req.body;
     const employerId = req.user.id; 
-
   
     const validStatuses = ['pending', 'accepted', 'rejected'];
     if (!validStatuses.includes(status)) {

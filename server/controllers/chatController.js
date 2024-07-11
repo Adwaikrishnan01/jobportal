@@ -6,6 +6,7 @@ import Message from '../models/messageModel.js'
 
 export const startChat=async(req, res) => {
   const { currentUserId, otherUserId } = req.body;
+  console.log(currentUserId,"----id--",otherUserId)
   const roomId = generateRoomId(currentUserId, otherUserId);
   res.json({ roomId });
 };

@@ -3,19 +3,20 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from '../utils/AxiosConfig'
-import { CHAT_SERVER_URL } from '../utils/API';
+
 function StartChat() {
   const [otherUserId, setOtherUserId] = useState('');
-  
-  
-  const currentUserId="668bf3accb7f584ef247e7e2"
   const navigate = useNavigate();
+  // const {user}=useSelector(state=>state.auth)
   
-
+  
+  // const currentUserId=user.id
+  const currentUserId = '668bf3accb7f584ef247e7e2'
+console.log("startchadid",currentUserId)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${CHAT_SERVER_URL}/chat/start-chat`, { currentUserId, otherUserId });
+      const response = await axios.post('/chat/start-chat', { currentUserId, otherUserId });
       const data =  response.data;
       navigate(`/chat/${data.roomId}`);
     } catch (error) {

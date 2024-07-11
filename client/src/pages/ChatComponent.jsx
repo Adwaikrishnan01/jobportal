@@ -13,33 +13,38 @@ const ChatComponent=()=> {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const { roomId } = useParams();
-  const userId = '668bf3accb7f584ef247e7e2'// Assume we store userId in localStorage
-  console.log("chatuserid",userId)
-
+  
+   const userId = '668bf3accb7f584ef247e7e2'
+  
+  // const {user}=useSelector(state=>state.auth)
+  // const userId =user.id
+   console.log("chatuserid",userId)
   useEffect(() => {
-    const newSocket = io('http://localhost:3001', {
+    // Ensure userId is defined before attempting to connect
+    if (userId) {
+      const newSocket = io('http://localhost:3000', {
         auth: { userId },
-        transports: ['polling'], // Try forcing websocket first
+        transports: ['polling', 'websocket'], // Allow both polling and websocket
       });
-    
+  
       newSocket.on('connect_error', (error) => {
         console.error('Connection error:', error);
       });
-    
+  
       newSocket.on('connect', () => {
-        console.log('Connected to server');
+        console.log('Connected to server with userId:', userId);
         setSocket(newSocket);
-        newSocket.emit('join room', roomId);
+        // Make sure roomId is defined before emitting
+        if (roomId) {
+          newSocket.emit('join room', roomId);
+        }
       });
-
-    // Fetch previous messages
-    fetch(`http://localhost:3001/chat/messages/${roomId}`)
-      .then(response => response.json())
-      .then(data => setMessages(data))
-      .catch(error => console.error('Error fetching messages:', error));
-
-    
-  }, [roomId, userId]);
+  
+      return () => newSocket.close();
+    } else {
+      console.error('UserId is undefined. Cannot connect to socket.');
+    }
+  }, [userId, roomId]); 
 
   useEffect(() => {
     if (socket) {

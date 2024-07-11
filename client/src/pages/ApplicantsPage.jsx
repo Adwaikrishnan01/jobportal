@@ -8,10 +8,12 @@ import Button from '../components/Button';
 
 const JobApplicants = () => {
   const [applicants, setApplicants] = useState([]);
+  console.log(applicants)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { jobId } = useParams();
   const { user } = useSelector((state) => state.auth);
+ 
 
   useEffect(() => {
     fetchApplicants();
@@ -31,7 +33,7 @@ const JobApplicants = () => {
 
   const handleStatusChange = async (applicationId, newStatus) => {
     try {
-      await axios.patch(`/jobs/applications/status/${applicationId}`, 
+      await axios.patch(`/jobs/applications/status/${applicationId}`,
         { status: newStatus }
       );
       setApplicants(applicants.map(app => 
@@ -71,9 +73,11 @@ const JobApplicants = () => {
                 <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                   <td className="py-3 px-6 text-left">{applicant.applicantName}</td>
                   <td className="py-3 px-6 text-left">{applicant.applicantEmail}</td>
-                  <td className="py-3 px-6 text-left">{!applicant.applicantPhone?"not provided":applicant.applicantPhone}</td>
+                  <td className="py-3 px-6 text-left">{!applicant.applicantPhone?"not provided":
+                  applicant.applicantPhone}</td>
                   <td className="pb-2 px-6 text-left">
-                      <Button small outline label={"View"} onClick={()=>{handleDownloadResume(applicant.applicantId)}}/></td>
+                      <Button small outline label={"View"} 
+                      onClick={()=>{handleDownloadResume(applicant.applicantId)}}/></td>
                   <td className="py-3 px-6 text-left">
                     {new Date(applicant.appliedAt).toLocaleDateString()}
                   </td>

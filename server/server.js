@@ -23,10 +23,10 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true, 
 }));
-const chatserver = http.createServer(app);
-const io = new Server(chatserver, {
+const server = http.createServer(app);
+const io = new Server(server, {
   cors: {
-    origin: '*', // Replace with your frontend URL
+    origin: '*', // Replace with your frontend URL in production
     methods: ["GET", "POST"]
   }
 });
@@ -51,14 +51,14 @@ app.use(userRoute);
 app.use('/jobs',jobRoute)
 app.use('/feeds',feedRoute)
 
-app.listen(port, () => {    
+server.listen(port, () => {    
   console.log(`Server is running on port ${port}`); 
 }); 
 
 // Middleware to authenticate socket connections
 io.use((socket, next) => {
   const userId = socket.handshake.auth.userId;
-  console.log("sockehandshake",socket.handshake)
+  console.log("sockethandshake", socket.handshake);
   if (!userId) {
     return next(new Error("invalid userId"));
   }
@@ -101,7 +101,5 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.userId);
   });
 });
-chatserver.listen(3001, () => {
-  console.log('Server is running on port 3001');
-});
+
 app.use('/chat',chatRoute)
