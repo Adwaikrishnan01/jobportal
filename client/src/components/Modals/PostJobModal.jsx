@@ -4,15 +4,15 @@ import axios from '../../utils/AxiosConfig.js'
 import Modal from './Modal.jsx';
 import { toast } from 'react-toastify';
 import { closeModal } from '../../redux/slices/modalSlice.js';
-import { useDispatch } from 'react-redux';
-import { fetchCurrentUser } from '../../redux/slices/authSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
 
-const createJobPostingAction = async (formData) => {
-    
+
+const createJobPostingAction = async ({formData,companyName}) => {
+   
   try {
     const response = await axios.post('/jobs/postjob', {
       jobTitle: formData.get('jobTitle'),
-      companyName: formData.get('companyName'),
+      companyName: companyName,
       requiredSkills: formData.get('requiredSkills').split(',').map(skill => skill.trim()),
       experience: {
         min: parseInt(formData.get('experienceMin')),
@@ -30,12 +30,14 @@ const createJobPostingAction = async (formData) => {
 };
 
 const PostJobModal = () => {
+  const { user } = useSelector((state) => state.auth);
+  const companyName=user?.companyName
   const [message, setMessage] = useState('');
   const dispatch=useDispatch()
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const result = await createJobPostingAction(formData);
+    const result = await createJobPostingAction({formData,companyName});
     toast.success("Job posted successfully")
     setMessage(result.message);
     if (result.success) {
@@ -55,7 +57,7 @@ const PostJobModal = () => {
       <form onSubmit={handleSubmit}>
         <div className='grid grid-cols-2 gap-3'>
         <Input label="Job Title" id="jobTitle" name="jobTitle" required />
-        <Input label="Company Name" id="companyName" name="companyName" required />
+        <Input label="Company Name" id="companyName" name="companyName" disabled value={companyName}  />
         <Input label="Required Skills (comma-separated)" id="requiredSkills" name="requiredSkills" />
         <Input label="Location" id="location" name="location" required /></div>
         <div className="mb-4 flex space-x-4">

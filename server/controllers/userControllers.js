@@ -324,8 +324,8 @@ export const refreshToken = async (req, res) => {
 
     export const dowmloadResume = async (req, res) => {
       try {
-        const userId = req.user.id;
-        const user = await userModel.findById(userId);
+        const {id} = req.params
+        const user = await userModel.findById(id);
     
         if (!user || !user.resume) {
           return res.status(404).json({ message: 'Resume not found' });

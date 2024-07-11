@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import axios from '../utils/AxiosConfig'
 import UserJobView from '../components/UserJobView';
 import ResumeUpload from '../components/ResumeUpload';
+import { handleDownloadResume } from '../actions/Actions';
 const UserProfile = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, status } = useSelector((state) => state.auth);
@@ -49,21 +50,13 @@ const handleVerify=async()=>{
    }
 }
 
-const handleDownloadResume = async () => {
-  try {
-    const response = await axios.get('/downloadResume');
-    const { url } = response.data;
-    window.open(url, '_blank');
-  } catch (error) {
-    console.error('Error downloading resume:', error);
-  }
-};
+
 
   return (
    <>
     <section className='relative w-full bg-fuchsia-100 pt-14 pb-20'>
         <div className="max-w-5xl sm:mx-auto mx-3 md:px-8 px-2 shadow-sm bg-white py-6 rounded-md">  
-      <h2 className='text-2xl text-center text-fuchsia-800 mb-4 capitalize'>{user.name}</h2>
+      <h2 className='text-2xl text-center text-purple-950 mb-4 capitalize'>{user.name}</h2>
       <div className="flex justify-between items-end">
       <div className="space-y-1">
       <p className='text-md text-gray-600 font-semibold'>Profile details:</p>
@@ -97,7 +90,7 @@ const handleDownloadResume = async () => {
         <div className='flex justify-between items-center space-x-6'>
            <div>Resume : </div>
            <div className='text-fuchsia-700 font-thin'>{!user.resume?"not submitted":
-           (<Button small outline label={"View"} onClick={handleDownloadResume}/>)}</div>
+           (<Button small outline label={"View"} onClick={()=>{handleDownloadResume(user._id)}}/>)}</div>
         </div>
         
         </div>

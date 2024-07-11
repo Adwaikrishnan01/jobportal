@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import { useSelector } from 'react-redux';
+import { ApplyJobAction } from '../actions/Actions';
+import { useNavigate } from 'react-router-dom';
 
 const JobCard = ({jobPosting}) => {
   const { user } = useSelector((state) => state.auth);
+  const navigate=useNavigate()
+  const [creator,setIsCreator]=useState(false)
   let role
   if(user)
    role=user.role
@@ -15,8 +19,28 @@ const JobCard = ({jobPosting}) => {
     const timeDifference = currentDate - postedDate; 
     const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); 
     return daysDifference === 0 ? 'today' : `${daysDifference} days ago`;
-  };
 
+  };
+  const handleClick = () => {
+    navigate(`/userjobs/applicants/${jobPosting._id}`);
+  };
+  const getEmployerId = () => {
+    if (Array.isArray(jobPosting.createdBy)) {
+      // If it's an array, return the _id of the first element
+      return jobPosting.createdBy[0]._id;
+    } else if (typeof jobPosting.createdBy === 'object') {
+      return jobPosting.createdBy._id;
+    } else {
+      return jobPosting.createdBy;
+    }
+  }
+  useEffect(()=>{
+    const createdBy=getEmployerId()
+    if(createdBy===user?._id){
+    setIsCreator(true)
+  }
+  },[user])
+  
   return (
     <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl my-6">
       <div className="flex justify-between items-start">
@@ -68,7 +92,10 @@ const JobCard = ({jobPosting}) => {
       <div className="mt-4 flex justify-between items-center text-sm">
         <span className="text-gray-500">{getDaysAgo(jobPosting.createdAt)}</span>
         <div className="space-x-4">
-          {role==='employer'?'info':<Button label={"Apply"} outline onClick={()=>{}}/>}
+          {creator?<Button onClick={handleClick} className='underline hover:cursor-pointer' 
+          label={"View Applicants"} outline/>
+          :<Button label={"Apply"} outline 
+          onClick={() => ApplyJobAction(jobPosting._id)}/>}
         </div>
       </div>
     </div>

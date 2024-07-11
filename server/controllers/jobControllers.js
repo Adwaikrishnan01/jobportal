@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Jobs from "../models/jobModel.js";
-import userModel from "../models/userModel.js";
+import User from "../models/userModel.js";
+import JobApplication from '../models/applicationModel.js';
 export const createJobPosting = async (req, res) => {
     try {
       const {
@@ -46,7 +47,7 @@ export const createJobPosting = async (req, res) => {
   //get all jobs
   export const getAllJobPostings = async (req, res) => {
     try {
-      const jobPostings = await Jobs.find({}).populate('createdBy'); 
+      const jobPostings = await Jobs.find({}).populate('createdBy','-password -age -resume -skills'); 
       res.status(200).json(jobPostings);
     } catch (error) {
       console.error('Error fetching job postings:', error);
@@ -128,4 +129,156 @@ export const createJobPosting = async (req, res) => {
         res.status(500).json({ message: 'Internal server error', error: error.message });  
       }
     };
+
+//apply for job
+    
+ export const applyForJob = async (req, res) => {
+  try {
+    const  jobId  = req.params.id;
+    
+    const userId = req.user.id;   
+ 
+    const job = await Jobs.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    const existingApplication = await JobApplication.findOne({ job: jobId, applicant: userId });
+    if (existingApplication) {
+      return res.status(400).json({ message: 'You have already applied for this job' });
+    }
+
+    const employer = await User.findById(job.createdBy);
+    if (!employer) {
+      return res.status(404).json({ message: 'Employer not found' });
+    }
+
+    
+    const newApplication = new JobApplication({
+      job: jobId,
+      applicant: userId,
+      employer: employer._id,
+      status: 'pending',
+      resumeLink: req.user.resume 
+    });
+
+    await newApplication.save();
+
+    res.status(201).json({ 
+      message: 'Application submitted successfully', 
+      application: newApplication 
+    });
+
+  } catch (error) {
+    console.error('Error in applyForJob:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+//get user job applications
+export const getUserApplications = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const applications = await JobApplication.find({ applicant: userId })
+      .populate('job', 'jobTitle companyName location') 
+      .populate('employer', 'companyName') 
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: applications.length,
+      data: applications
+    });
+  } catch (error) {
+    console.error('Error in getUserApplications:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+//applicants for job
+
+export const getJobApplicants = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const employerId = req.user.id; 
+    const job = await Jobs.findOne({ _id: id, createdBy: employerId });
+    if (!job) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Job not found or you do not have permission to view its applicants' 
+      });
+    }
+
+    const applications = await JobApplication.find({ job: id })
+      .populate('applicant', 'name email phone status _id')
+      .sort({ createdAt: -1 }); 
+
+    res.status(200).json({
+      success: true,
+      count: applications.length,
+      data: applications.map(app => ({
+        applicantId: app.applicant._id,
+        applicantName: app.applicant.name,
+        applicantEmail: app.applicant.email,
+        applicantPhone: app.applicant.phone,
+        status: app.status,
+        appliedAt: app.createdAt,
+      }))
+    });
+
+  } catch (error) {
+    console.error('Error in getJobApplicants:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+export const updateApplicationStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const employerId = req.user.id; 
+
+  
+    const validStatuses = ['pending', 'accepted', 'rejected'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+
+    const application = await JobApplication.findOne({ _id: id }).populate('job');
+    
+    if (!application) {
+      return res.status(404).json({ success: false, message: 'Application not found' });
+    }
+
+    if (application.job.createdBy.toString() !== employerId) {
+      return res.status(403).json({ success: false, message: 'Not authorized to update this application' });
+    }
+
+    application.status = status;
+    await application.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Application status updated successfully',
+      data: application
+    });
+
+  } catch (error) {
+    console.error('Error in updateApplicationStatus:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
   

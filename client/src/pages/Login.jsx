@@ -20,7 +20,6 @@ const Login = () => {
   useEffect(() => {
     if (isAuthenticated &&  user) {
       dispatch(fetchCurrentUser()).then((fetchedUser) => {
-        console.log("fetcheduser",fetchedUser)
         if (fetchedUser.payload.initial_login === true) {
           navigate('/onboarding');
         } else {
@@ -49,10 +48,8 @@ const Login = () => {
 
    const handleGoogleLogin = async () => {
     try {
-      console.log("googletap")
       // const tokenId = googleUser.getAuthResponse().id_token;
       const  gresponse= await googleLogin();
-      console.log("googleres",gresponse)
      // dispatch(loginUser(accessToken));
     } catch (error) {
       console.error('Google login error:', error);

@@ -20,7 +20,7 @@ const Navbar = () => {
             {<div className="flex items-center">
                 <div className="mx-8 text-fuchsia-800 text-lg space-x-5">
                 <Link to='/' className=" hover:text-fuchsia-500 font-serif">Home</Link>
-                    <Link to='/' className=" hover:text-fuchsia-500 font-serif">Feeds</Link></div>
+                    <Link to='/feeds' className=" hover:text-fuchsia-500 font-serif">Feeds</Link></div>
                     <UserMenu user={user}/></div>}
         </div>
 

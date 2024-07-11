@@ -4,6 +4,8 @@ import Sidebar from '../components/sidebar/SideBar'
 import 'react-toastify/dist/ReactToastify.css';
 import { API_URL } from '../utils/API';
 import axios from 'axios'
+
+
 const Home = () => {
 
     const [filters, setFilters] = useState({
@@ -17,7 +19,6 @@ const Home = () => {
     const [jobs, setJobs] = useState([]);
     const [isLoading, setIsLoading] = useState(false); 
     const [error, setError] = useState(null);
-  
   
     const filteredJobs = async (appliedFilters = {}) => {
       setIsLoading(true);

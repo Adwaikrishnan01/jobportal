@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import cors from 'cors'
 import userRoute from './routes/userRoute.js'
 import jobRoute from './routes/jobRoute.js'
+import feedRoute from './routes/feedRoute.js'
 import passport from './passport-config.js';
 import session from 'express-session';
 import connectDB from "./dbconfig.js";
@@ -39,6 +40,7 @@ app.set('views', './views');
 
 app.use(userRoute);
 app.use('/jobs',jobRoute)
+app.use('/feeds',feedRoute)
 app.listen(port, () => {    
   console.log(`Server is running on port ${port}`); 
 }); 

@@ -11,7 +11,6 @@ const Onboarding = () => {
     const handleClick=async()=>{
         try{
             const response=await axios.put('/initial')
-            console.log("onboardingres",response)
             if(response.status===200){
                 navigate('/')
             }

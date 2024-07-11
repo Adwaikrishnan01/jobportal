@@ -31,6 +31,8 @@ const UserMenu = ({user}) => {
                <MenuItem label={"Register"} onClick={()=>{navigate('/signup')}}/></>}
                {user && <>
                <MenuItem label={"My Profile"} onClick={()=>{navigate('/profile')}}/>
+               <MenuItem label={"Your Jobs"} onClick={()=>{navigate('/userjobs')}}/>
+               <hr />
                <MenuItem label={"Logout"} onClick={logoutHandler}/></>}
                 </div>
             </div>

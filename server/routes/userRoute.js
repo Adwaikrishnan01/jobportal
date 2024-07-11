@@ -62,6 +62,6 @@ router.put('/initial',authMiddleware,initialController)
 
 router.post('/upload-resume',upload.single('resume'),authMiddleware, uploadResume);
 
-router.get('/downloadResume', authMiddleware, dowmloadResume);
+router.get('/downloadResume/:id', dowmloadResume);
 export default router;
 

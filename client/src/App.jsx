@@ -12,7 +12,8 @@ import { useEffect, useState } from 'react';
 import { fetchCurrentUser } from './redux/slices/authSlice.js';
 import Onboarding from './pages/Onboarding.jsx';
 import Feeds from './pages/Feeds.jsx';
-
+import UserJobs from './pages/UserJobs.jsx'
+import ApplicantsPage from './pages/ApplicantsPage.jsx'
 const App = () => {
   return (
       <Router>
@@ -23,6 +24,8 @@ const App = () => {
           <Route path="/signup" element={ <Register/> } />
           <Route path="/onboarding" element={ <PrivateRoute><Onboarding/></PrivateRoute> } />
           <Route path="/profile" element={<PrivateRoute><UserProfile/></PrivateRoute>} />
+          <Route path="/userjobs" element={<PrivateRoute><UserJobs/></PrivateRoute>} />
+          <Route path="/userjobs/applicants/:jobId" element={<PrivateRoute><ApplicantsPage/></PrivateRoute>} />
           <Route path="/post-job" element={<CreateJobPosting/>}/>
           <Route path="/feeds" element={ <Feeds/> } />
         </Routes>
