@@ -1,20 +1,20 @@
 // MessageList.js
 import React from 'react';
 
-function MessageList({ messages, currentUserId }) {
+const MessageList=({ messages, userId })=> {
     console.log("chatmessge",messages)
   return (
-    <div className=''>
-      {messages.map((message, index) => (
-        <div 
-          key={index} 
-          className={`message ${message.sender === currentUserId ? 'sent' : 'received'}`}
-        >
-          <p>{message.content}</p>
-          <small>{new Date(message.timestamp).toLocaleString()}</small>
-        </div>
-      ))}
-    </div>
+    
+      <div className="overflow-y-auto h-64 p-4">
+    {messages.map((msg, index) => (
+      <div key={index} className={`mb-2 ${msg.sender === userId ? 'text-right' : 'text-left'}`}>
+        <p className={`inline-block p-2 rounded-lg ${msg.sender === userId ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
+          {msg.content}
+        </p>
+      </div>
+    ))}
+  </div>
+    
   );
 }
 

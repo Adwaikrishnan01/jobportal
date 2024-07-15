@@ -3,11 +3,17 @@ import mongoose from 'mongoose';
 const MessageSchema = new mongoose.Schema({
   sender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'users',
     required: true
   },
-  room: {
+  roomId: {
     type: String,
+    required:true,
+    index: true  // Add an index for better query performance
+  },
+  receiverId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users',
     required: true
   },
   content: {
@@ -21,3 +27,4 @@ const MessageSchema = new mongoose.Schema({
 });
 
 export default mongoose.model('Message', MessageSchema);
+

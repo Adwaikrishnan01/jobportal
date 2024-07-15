@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LuMessageSquarePlus } from "react-icons/lu";
-import Button from './Button';
 
-const UserFeed = ({feed}) => {
 
+
+const UserFeed = ({feed,setIsSheetOpen,setselectedUserId,setselectedUserName}) => {
+  const openSheet = () => setIsSheetOpen(true);
+
+  async function handleMessage(userId,username){
+    openSheet()
+    setselectedUserId(userId);
+    setselectedUserName(username)
+  }
   return (
     <div className='shadow-md bg-white text-gray-700 my-2 max-w-3xl mx-auto border border-gray-200
     rounded-xl'>
@@ -19,8 +26,9 @@ const UserFeed = ({feed}) => {
         <hr/>
         <div className='px-5 py-2 text-sm'>{feed.feedDescription}</div>
         
-        <div className='py-1 px-3 flex w-full justify-end '>
-          <div className='w-32 flex items-center shadow-md border border-fuchsia-200 
+        <div className='py-1 px-3 flex w-full justify-end' 
+        onClick={()=>{handleMessage(feed.createdBy._id,feed.createdBy.name)}}>
+          <div className='w-32 flex items-center shadow-md border border-fuchsia-200 hover:bg-fuchsia-100
           px-2 py-1 rounded-md cursor-pointer'>
             <LuMessageSquarePlus size={26}/>
           <p className='font-thin text-fuchsia-600 ml-1'>message</p></div> 

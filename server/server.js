@@ -14,6 +14,8 @@ import cookieParser from 'cookie-parser'
 import http from 'http';
 import { Server } from 'socket.io';
 import Message from './models/messageModel.js'
+import Room from './models/roomModel.js'
+
 
 const app = express();
 dotenv.config();
@@ -58,7 +60,6 @@ server.listen(port, () => {
 // Middleware to authenticate socket connections
 io.use((socket, next) => {
   const userId = socket.handshake.auth.userId;
-  console.log("sockethandshake", socket.handshake);
   if (!userId) {
     return next(new Error("invalid userId"));
   }
@@ -66,40 +67,55 @@ io.use((socket, next) => {
   next();
 });
 
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.userId);
-
-  // Join a room (could be a direct message room or a group chat room)
-  socket.on('join room', (roomId) => {
-    socket.join(roomId);
-    console.log(`User ${socket.userId} joined room ${roomId}`);
-  });
 
   // Listen for new messages
-  socket.on('send message', async ({ roomId, message }) => {
-    try {
-      const newMessage = new Message({
-        sender: socket.userId,
-        room: roomId,
-        content: message
-      });
-      await newMessage.save();
+  // socket.on('send message', async ({ roomId,userId, message,messageId }) => {
+  //   try {
+  //     const newMessage = new Message({
+  //       id:messageId,
+  //       room: roomId,
+  //       sender: userId,
+  //       content: message 
+  //     });
+  //     await newMessage.save();
+   
+  //     // Update the lastMessage timestamp in the Room document
+  //     await Room.findOneAndUpdate({ roomId }, { lastMessage: new Date() });
+  
+  //     io.to(roomId).emit('new message', newMessage);
+  //   } catch (error) {
+  //     console.error('Error saving message:', error);
+  //   }
+    
+  // });
+// io.on('connection', (socket) => {
+//   socket.on('join room', (roomId) => {
+//     socket.join(roomId);
+//   });
 
-      // Broadcast the message to the room
-      io.to(roomId).emit('new message', {
-        sender: socket.userId,
-        content: message,
-        timestamp: new Date()
-      });
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  socket.on('join room', (roomId) => {
+    console.log(`Socket ${socket.id} joining ${roomId}`);
+    socket.join(roomId);
+  });
+
+  socket.on('send message', async (message) => {
+    console.log('Message received:', message);
+    try {
+      const savedMessage = await Message.create(message);
+      console.log('Message saved:', savedMessage);
+      io.to(message.roomId).emit('new message', savedMessage);
     } catch (error) {
       console.error('Error saving message:', error);
     }
   });
 
-  // Handle disconnection
   socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.userId);
+    console.log('Client disconnected');
   });
 });
+
 
 app.use('/chat',chatRoute)
