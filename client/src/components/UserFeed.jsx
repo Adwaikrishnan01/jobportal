@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { LuMessageSquarePlus } from "react-icons/lu";
 
-
-
 const UserFeed = ({feed,setIsSheetOpen,setselectedUserId,setselectedUserName}) => {
   const openSheet = () => setIsSheetOpen(true);
 
@@ -15,12 +13,12 @@ const UserFeed = ({feed,setIsSheetOpen,setselectedUserId,setselectedUserName}) =
     <div className='shadow-md bg-white text-gray-700 my-2 max-w-3xl mx-auto border border-gray-200
     rounded-xl'>
         <div className='flex h-20'>
-            <div className="w-1/6 px-3 py-2">
+            <div className="w-2/6 md:w-1/6 px-3 py-2">
             <img src='/avatar.jpg' alt='user' width={60}/>
             </div>
             <div className="w-5/6 flex flex-col px-3 py-2">
-            <h2 className='text-2xl'>{feed.feedTitle}</h2>
-             <div className='font-thin'>{feed.createdBy.name}</div>
+            <h2 className='text-xl md:text-2xl'>{feed.feedTitle}</h2>
+             <div className='text-sm tracking-tight font-thin'>posted by : {feed.createdBy.name}</div>
             </div>
         </div>
         <hr/>

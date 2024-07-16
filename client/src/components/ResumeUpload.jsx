@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import Input from './Input';
-// import { API_URL } from '../utils/API';
-// import axios from 'axios';
 import axios from '../utils/AxiosConfig'
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -43,11 +41,13 @@ const ResumeUpload = () => {
   };
 
   return (
-    <div className='mx-auto flex items-end justify-center'>
-        <div className="border-dashed border-2 border-fuchsia-500 rounded-lg py-3 px-5 space-y-3">
+    <div className='mx-auto flex items-center justify-center'>
+        <div className="flex flex-col border-dashed border-2 border-fuchsia-500 rounded-lg py-3 px-5 space-y-3 w-full">
       <h2 className='text-sm text-fuchsia-600 m-1'>{user.resume?"Update Your Resume":"Upload Your Resume"}</h2>
-      <form onSubmit={handleSubmit} className='space-y-2'>
-        <input type="file" onChange={handleFileChange} accept=".pdf,.doc,.docx"/>
+      <form onSubmit={handleSubmit} className='space-y-2 flex flex-col'>
+        <input type="file" onChange={handleFileChange} accept=".pdf,.doc,.docx" 
+        className='file:mr-4 file:py-1 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold
+         file:bg-fuchsia-100 file:text-fuchsia-700 hover:file:bg-fuchsia-200'/>
         <Button type="submit" small label={"upload"}/>
       </form>
       {uploadStatus && <p>{uploadStatus}</p>}

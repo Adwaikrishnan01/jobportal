@@ -35,7 +35,6 @@ const UserMessage = ({ selectedUserId, onBack,userId,selectedUserName}) => {
           message={message} 
           userId={userId}
           
-       
         />
       ))}
     </div>
@@ -62,7 +61,7 @@ const UserMessage = ({ selectedUserId, onBack,userId,selectedUserName}) => {
 };
 
 const Message = ({ message, userId}) => {
- console.log("message and userID",message.sender,userId,"rec same as first")
+
 return(
 <div className={`${message.sender === userId ? 'text-right' : 'text-left'} mx-5 my-4`}>
     <span className={`inline-block px-2 py-1 rounded-xl ${

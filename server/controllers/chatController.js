@@ -3,7 +3,7 @@ import Message from '../models/messageModel.js'
 // In your route handler or controller
 import Room from '../models/roomModel.js';
 import User from "../models/userModel.js";
-
+import mongoose from 'mongoose'
 export const startChat = async (req, res) => {
   try {
     const { userId, selectedUserId } = req.body;
@@ -77,5 +77,76 @@ export const startChat = async (req, res) => {
         res.status(500).json({ message: 'Error fetching messages', error: error.message });
       }
     };
+
+  //get users
+
+  export const getMessagedUsers = async (req, res) => {
+    //const currentUserId = req.user._id; // Assuming you have user info in the request
+  
+    // try {
+    //   // Find all distinct users the current user has sent or received messages from
+    //   const sentMessages = await Message.distinct('receiverId', { sender: currentUserId });
+    //   const receivedMessages = await Message.distinct('sender', { receiver: currentUserId });
+  
+    //   // Combine and remove duplicates
+    //   const userChats = Array.from(new Set([...sentMessages, ...receivedMessages]));
+    //   const users = await User.find({ _id: { $in: userChats } }).select('name _id');
+  
+    //   res.status(200).json(users);
+    // } catch (error) {
+    //   console.error('Error fetching user chats:', error);
+    //   res.status(500).json({ error: 'Failed to fetch user chats' });
+    // }
+   
+
+    const userId = req.user._id;
+
+    try {
+      // Find all messages where the current user is either the sender or receiver
+      const userMessages = await Message.aggregate([
+        {
+          $match: {
+            $or: [
+              { sender: userId },
+              { receiver: userId }
+            ]
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            chatPartners: {
+              $addToSet: {
+                $cond: [
+                  { $eq: ['$sender', userId] },
+                  '$receiver',
+                  '$sender'
+                ]
+              }
+            }
+          }
+        }
+      ]);
+  
+      if (userMessages.length === 0) {
+        return res.status(200).json([]);
+      }
+  
+      const chatPartnerIds = userMessages[0].chatPartners;
+  
+      // Fetch user details for chat partners
+      const users = await User.find(
+        { _id: { $in: chatPartnerIds } },
+        { name: 1, _id: 1 }
+      ).lean();
+  
+      console.log('Chat partners found:', users.length);
+  
+      res.status(200).json(users);
+    } catch (error) {
+      console.error('Error fetching user chats:', error);
+      res.status(500).json({ error: 'Failed to fetch user chats' });
+    }
+  };
     
   

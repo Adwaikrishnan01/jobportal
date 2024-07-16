@@ -4,17 +4,17 @@ import JobsFilter from './Filter'
 const Sidebar = ({ filters, onFilterChange,onApplyFilters,onClearFilters }) => {
 
     return ( 
-         <div className="hidden md:block w-1/6 bg-gray-100 py-4 shadow-md">
-          <JobsFilter filters={filters} 
+         <div className="bg-gray-100 py-4">
+          <JobsFilter 
+          filters={filters} 
           onFilterChange={onFilterChange} 
           onApplyFilters={onApplyFilters} 
           onClearFilters={onClearFilters}
           />
          </div>
-
      );
 }
- 
+
 export default Sidebar;
 
 

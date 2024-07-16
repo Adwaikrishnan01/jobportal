@@ -50,6 +50,8 @@ const EmployerJobs = () => {
         <SkeletonJobCard />
         <SkeletonJobCard />
         <SkeletonJobCard />
+        <SkeletonJobCard />
+        <SkeletonJobCard />
       </div>
     );
   }
@@ -80,9 +82,9 @@ const EmployerJobs = () => {
        </div>
       )}
         return (
-        <section className="bg-purple-50 min-h-screen flex">
-          <div className='max-w-5xl mx-auto'>
-            <div className="flex w-full items-center py-5 px-2 
+        <section className="bg-purple-100 min-h-screen flex">
+          <div className='max-w-5xl mx-auto px-4'>
+            <div className="flex w-full items-center py-5 px-2
         justify-between shadow-md rounded-md my-3 bg-white
         text-gray-700 font-semibold text-xl">
               <div>Total jobs : {jobs.length}</div>
@@ -98,7 +100,7 @@ const EmployerJobs = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-0 mx-4">
               {jobs.map((jobPosting) => (
                 <JobCard jobPosting={jobPosting} key={jobPosting._id} />
               ))} </div>

@@ -36,7 +36,7 @@ const UserApplications = () => {
     return (
         <div>
             <div className='flex justify-end'>
-                <div className='w-40'>
+                <div className='w-40 mx-4 md:mx-8 lg:mx-24'>
                     <Button label={"Apply new"} onClick={() => { navigate('/') }}
                         small icon={IoMdAdd} /></div></div>
             <div className="container mx-auto px-4 py-8">
@@ -51,8 +51,8 @@ const UserApplications = () => {
                             </p>
                             <p className="font-medium text-fuchsia-600 mb-2">
                                 Status: <span className={`py-1 px-3 rounded-full text-xs ${app.status === 'pending' ? 'bg-yellow-200 text-yellow-600' :
-                                        app.status === 'accepted' ? 'bg-green-200 text-green-600' :
-                                            'bg-red-200 text-red-600'
+                                    app.status === 'accepted' ? 'bg-green-200 text-green-600' :
+                                        'bg-red-200 text-red-600'
                                     }`}>{app.status}</span>
                             </p>
                         </div>

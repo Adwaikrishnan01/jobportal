@@ -26,15 +26,22 @@ const PostFeedModal = () => {
   const dispatch=useDispatch()
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const result = await createFeedPostingAction(formData);
-    toast.success("feed posted successfully")
-    setMessage(result.message);
-    if (result.success) {
-      e.target.reset(); 
-      dispatch(closeModal('postfeed'))
-      window.location.reload();
-    }
+    try{
+      const formData = new FormData(e.target);
+          const result = await createFeedPostingAction(formData);
+          console.log(result)
+          if(result){
+          toast.info(result.message)}
+          setMessage(result.message);
+          if (result.success) {
+            e.target.reset(); 
+            dispatch(closeModal('postfeed'))
+            window.location.reload();
+          }
+          }catch(error){
+            toast.error(error.message)
+          }
+    
   };
 
   return (

@@ -10,6 +10,7 @@ import Sheet from '../components/Sheet';
 import ChatHeader from '../components/chat/ChatHeader';
 import UserList from '../components/chat/UserList';
 import UserMessage from '../components/chat/UserMessage';
+
 const Feeds = () => {
   const [feeds, setFeeds] = useState([]);
   const [isLoading, setIsLoading] = useState(false); 
@@ -20,12 +21,6 @@ const Feeds = () => {
   const[roomId,setRoomId]=useState()
   const [selectedUserName,setselectedUserName]=useState()
   const userId=user?._id
-
-  // const users = [
-  //   { id: 1, name: 'Alice' },
-  //   { id: 2, name: 'Bob' },
-  //   { id: 3, name: 'Charlie' },
-  // ];
 
  
   const closeSheet = () => {
@@ -38,7 +33,12 @@ const Feeds = () => {
     setRoomId(null)
   };
 
-
+  const onUserClick=(userId,username)=>{
+    console.log("parentusername userid",userId,username)
+    setselectedUserId(userId);
+    setselectedUserName(username)
+    setIsSheetOpen(true)
+   }
   const dispatch=useDispatch()
   useEffect(() => {
     const fetchFeedPostings = async () => {
@@ -63,21 +63,23 @@ const Feeds = () => {
   };
 
   if(feeds.length===0){
-    return <div>
-      Feeds are empty
+    return (
+    <div>
+     <p className='text-red-500 mx-3 md:mx-8'>Feeds are empty</p> 
       <div className='w-full flex items-center justify-end px-4'>
        <div className='w-48'>
         <Button label={"Post your feed"} small onClick={handleCreateNewFeed} icon={IoCreateOutline}/>
         </div> 
       </div>
       </div>
+      )
   }
   if(error)
     return <div>Error:{error}</div>
   
   return (
     <section className="bg-gray-50 min-h-screen"> 
-   
+     
       <Sheet isOpen={isSheetOpen} onClose={closeSheet}>
         {selectedUserId ? (
           <UserMessage selectedUserId={selectedUserId} onBack={handleBackToList} userId={userId} 
@@ -85,20 +87,20 @@ const Feeds = () => {
         ) : (
           <>
             <ChatHeader/>
-            {/* <UserList users={users} onUserClick={handleUserClick} /> */}
+            <UserList  
+            onUserClick={onUserClick}
+            /> 
           </>
         )}
       </Sheet>
      
-      <div className='max-w-4xl flex items-center justify-end px-4 h-20'>
+      <div className='w-full flex items-center justify-end px-2 h-20 mx-auto md:px-20 lg:px-40'>
       <div className='w-48'>
         <Button label={"Post your feed"} small onClick={handleCreateNewFeed} icon={IoCreateOutline}/>
         </div> 
       </div>
-     <div className='font-thin text-fuchsia-700 mx-5 my-3'>
-      showing similar users feeds
-     </div>
-     <div className='space-y-4'>
+    
+     <div className='space-y-4 mx-2'>
      {feeds.map((feed,index)=>(
       <UserFeed feed={feed} key={index} 
       setIsSheetOpen={setIsSheetOpen} 

@@ -54,11 +54,10 @@ const navigate=useNavigate()
     onError: error => handleLoginError(error),
   });
 
-  return (<>
-  <Button icon={FcGoogle} label={label} outline onClick={()=>{login()}}/>
-    
-    </>
-   
+  return (
+    <div className='mt-3'>
+      <Button icon={FcGoogle} label={label} outline onClick={()=>{login()}}/>
+    </div>
   );
 };
 

@@ -10,7 +10,7 @@ const JobFilter = ({ filters, onFilterChange,onApplyFilters ,onClearFilters}) =>
   };
 
   return (
-    <div>
+    <div className='md:block px-4 md:px-0'>
       <Accordion title={"Filter"} 
       icon={<CiFilter size={20}/>}
       children={<>

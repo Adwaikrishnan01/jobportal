@@ -84,12 +84,13 @@ const Home = () => {
     }, []);
 
   return (
-    <div className="bg-gray-50 min-h-screen flex">
+    <div className="bg-gray-50 min-h-screen md:flex">
+      <div className='w-full md:w-2/6 lg:w-1/6 md:block bg-gray-100 py-4'>
       <Sidebar 
       filters={filters} 
       onFilterChange={handleFilterChange} 
       onApplyFilters={applyFilters} 
-      onClearFilters={clearFilters}/>
+      onClearFilters={clearFilters}/></div>
       <JobListings jobs={jobs} isLoading={isLoading} error={error}/>  
     </div>
   )}

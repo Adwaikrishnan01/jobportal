@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Sheet = ({ isOpen, onClose, children }) => {
   return (
     <div
-      className={`fixed top-0 right-0 h-full w-1/3 bg-white shadow-lg 
+      className={`fixed top-0 right-0 h-full md:w-3/6 w-5/6 lg:w-2/6 bg-white shadow-lg z-20
         transform transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
