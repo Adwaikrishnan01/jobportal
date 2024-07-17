@@ -15,7 +15,6 @@ const Navbar = () => {
     setNav(!nav);
   };
   const logoutHandler = () => {
-    console.log("logouttap")
     logout({dispatch,navigate});
   }
    
@@ -32,7 +31,7 @@ const Navbar = () => {
     { id: 5, text: 'Logout', link:'/', onClick:logoutHandler},
   ];
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  console.log("currentUser", user)
+  
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchCurrentUser());

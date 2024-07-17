@@ -5,7 +5,6 @@ import passport from "../passport-config.js";
 import jwt from 'jsonwebtoken';
 import twilio from 'twilio';
 import { OAuth2Client } from "google-auth-library";
-import { upload } from "../middleware.js";
 import AWS from 'aws-sdk'
 //register
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -307,7 +306,7 @@ export const refreshToken = async (req, res) => {
         Key: `resumes/${Date.now()}-${req.file.originalname}`,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
-        ACL: 'private' // or 'public-read' if you want the file to be publicly accessible
+        ACL: 'private'
       };
     
       try {

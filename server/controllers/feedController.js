@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
 import Feeds from "../models/feedModel.js";
-import User from "../models/userModel.js";
+
 export const createFeedPosting = async (req, res) => {
     try {
       const {

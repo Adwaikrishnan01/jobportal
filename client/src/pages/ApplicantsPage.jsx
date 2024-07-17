@@ -5,16 +5,19 @@ import axios from '../utils/AxiosConfig';
 import { toast } from 'react-toastify';
 import { handleDownloadResume } from '../actions/Actions';
 import Button from '../components/Button';
+import useDashBoardCounts from '../hooks/useDashBoardCounts';
 
 const JobApplicants = () => {
   const [applicants, setApplicants] = useState([]);
-  console.log(applicants)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { jobId } = useParams();
   const { user } = useSelector((state) => state.auth);
+  const {totalApplicants,
+    pendingApplicants,
+    acceptedApplicants,
+    rejectedApplicants}=useDashBoardCounts({applicants})
  
-
   useEffect(() => {
     fetchApplicants();
   }, [jobId]);
@@ -54,7 +57,14 @@ const JobApplicants = () => {
       <h2 className="text-2xl font-bold mb-6">Job Applicants</h2>
       {applicants.length === 0 ? (
         <p>No applicants for this job yet.</p>
-      ) : (
+      ) : (<>
+       <div className="w-full rounded-md shadow-md text-purple-600 text-md text-semibold my-5 px-5 py-4 
+        bg-purple-200 flex justify-between items-center gap-4 flex-wrap">
+        <div>Total applicants for job: {totalApplicants}</div>
+        <div className='text-orange-400'>Pending applicants : {pendingApplicants}</div>
+        <div className='text-green-600'>Accepted applicants : {acceptedApplicants}</div>
+        <div className='text-red-600'>Rejected applicants : {rejectedApplicants}</div>
+       </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
             <thead>
@@ -108,7 +118,7 @@ const JobApplicants = () => {
             </tbody>
           </table>
         </div>
-      )}
+      </>)}
     </div>
     </section>
   );

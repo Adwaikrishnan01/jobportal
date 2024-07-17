@@ -84,10 +84,10 @@ const EmployerJobs = () => {
         return (
         <section className="bg-purple-100 min-h-screen flex">
           <div className='max-w-5xl mx-auto px-4'>
-            <div className="flex w-full items-center py-5 px-2
-        justify-between shadow-md rounded-md my-3 bg-white
+            <div className="w-full my-5 py-4 px-8
+        shadow-md rounded-md bg-white
         text-gray-700 font-semibold text-xl">
-              <div>Total jobs : {jobs.length}</div>
+              <div className='text-purple-500'>Total Jobs Created: {jobs.length}</div>
             </div>
             <div className='flex justify-end'>
               <div className='w-40'>

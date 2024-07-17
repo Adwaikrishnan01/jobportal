@@ -37,17 +37,6 @@ const UserList = ({ onUserClick}) => {
                 </div>
             ))}
         </div>
-    //     <ul>
-    //     {users.map(user => (
-    //       <li
-    //         key={user.id}
-    //         onClick={() => onUserClick(user)}
-    //         className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-    //       >
-    //         {user.name}
-    //       </li>
-    //     ))}
-    //   </ul>
 
     )
 }

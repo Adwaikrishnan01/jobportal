@@ -101,7 +101,8 @@ const Feeds = () => {
       </div>
     
      <div className='space-y-4 mx-2'>
-     {feeds.map((feed,index)=>(
+     {
+     feeds.map((feed,index)=>(
       <UserFeed feed={feed} key={index} 
       setIsSheetOpen={setIsSheetOpen} 
       setselectedUserId={setselectedUserId}

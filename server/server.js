@@ -14,8 +14,6 @@ import cookieParser from 'cookie-parser'
 import http from 'http';
 import { Server } from 'socket.io';
 import Message from './models/messageModel.js'
-import Room from './models/roomModel.js'
-
 
 const app = express();
 dotenv.config();
@@ -28,7 +26,7 @@ app.use(cors({
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*', // Replace with your frontend URL in production
+    origin: '*', 
     methods: ["GET", "POST"]
   }
 });
@@ -67,34 +65,7 @@ io.use((socket, next) => {
   next();
 });
 
-
-  // Listen for new messages
-  // socket.on('send message', async ({ roomId,userId, message,messageId }) => {
-  //   try {
-  //     const newMessage = new Message({
-  //       id:messageId,
-  //       room: roomId,
-  //       sender: userId,
-  //       content: message 
-  //     });
-  //     await newMessage.save();
-   
-  //     // Update the lastMessage timestamp in the Room document
-  //     await Room.findOneAndUpdate({ roomId }, { lastMessage: new Date() });
-  
-  //     io.to(roomId).emit('new message', newMessage);
-  //   } catch (error) {
-  //     console.error('Error saving message:', error);
-  //   }
-    
-  // });
-// io.on('connection', (socket) => {
-//   socket.on('join room', (roomId) => {
-//     socket.join(roomId);
-//   });
-
 io.on('connection', (socket) => {
-  console.log('New client connected');
 
   socket.on('join room', (roomId) => {
     console.log(`Socket ${socket.id} joining ${roomId}`);
@@ -116,6 +87,4 @@ io.on('connection', (socket) => {
     console.log('Client disconnected');
   });
 });
-
-
-app.use('/chat',chatRoute)
+app.use('/chat',chatRoute);
