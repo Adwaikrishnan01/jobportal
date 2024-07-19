@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Jobs from "../models/jobModel.js";
 import User from "../models/userModel.js";
 import JobApplication from '../models/applicationModel.js';
+import Notification from "../models/notificationModel.js";
 export const createJobPosting = async (req, res) => {
     try {
       const {
@@ -266,6 +267,11 @@ export const updateApplicationStatus = async (req, res) => {
 
     application.status = status;
     await application.save();
+    await Notification.create({
+      userId: application.applicant._id,
+      message: `Your application status for ${application.job.jobTitle} applied to 
+      ${application.job.companyName} is ${status}.`
+    });
 
     res.status(200).json({
       success: true,
@@ -282,4 +288,25 @@ export const updateApplicationStatus = async (req, res) => {
     });
   }
 };
-  
+
+export const sendNotificationToUser=async (req, res) => {
+  try {
+    const notifications = await Notification.find({ userId: req.params.userId }).sort({ createdAt: -1 });
+    res.json(notifications);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching notifications', error: error.message });
+  }
+}
+
+export const deleteAllNotifications = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    await Notification.deleteMany({ userId });
+    
+    res.status(200).json({ message: 'All notifications deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting notifications:', error);
+    res.status(500).json({ message: 'Error deleting notifications', error: error.message });
+  }
+};

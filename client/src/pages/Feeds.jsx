@@ -7,10 +7,9 @@ import { IoCreateOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../redux/slices/modalSlice';
 import Sheet from '../components/Sheet';
-import ChatHeader from '../components/chat/ChatHeader';
 import UserList from '../components/chat/UserList';
 import UserMessage from '../components/chat/UserMessage';
-
+import { FaRegMessage } from "react-icons/fa6";
 const Feeds = () => {
   const [feeds, setFeeds] = useState([]);
   const [isLoading, setIsLoading] = useState(false); 
@@ -18,8 +17,9 @@ const Feeds = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedUserId, setselectedUserId] = useState(null);
   const {user} = useSelector(state=>state.auth)
-  const[roomId,setRoomId]=useState()
   const [selectedUserName,setselectedUserName]=useState()
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  const dispatch=useDispatch()
   const userId=user?._id
 
  
@@ -34,26 +34,25 @@ const Feeds = () => {
   };
 
   const onUserClick=(userId,username)=>{
-    console.log("parentusername userid",userId,username)
     setselectedUserId(userId);
     setselectedUserName(username)
     setIsSheetOpen(true)
    }
-  const dispatch=useDispatch()
+  
   useEffect(() => {
     const fetchFeedPostings = async () => {
       try {
+        setIsLoading(true)
         const response = await axios.get(`${API_URL}/feeds/getallfeeds`);
-      
         const {data} =response
         setFeeds(data);
       } catch (error) {
         setError(error.message);
       } finally {
         setIsLoading(false);
+        setTimeout(() => setInitialLoadComplete(true), 500);
       }
     };
-
     fetchFeedPostings();
   }, []);
 
@@ -62,10 +61,16 @@ const Feeds = () => {
     
   };
 
-  if(feeds.length===0){
+  if(isLoading) 
+    return <div className="text-center font-semibold text-gray-400 my-2">Loading....</div>
+    
+  if(error)
+    return <div>Error:{error}</div>
+
+  if(!isLoading && initialLoadComplete && feeds.length === 0){
     return (
     <div>
-     <p className='text-red-500 mx-3 md:mx-8'>Feeds are empty</p> 
+     <p className='text-gray-700 mx-3 md:mx-8'>Feeds are empty</p> 
       <div className='w-full flex items-center justify-end px-4'>
        <div className='w-48'>
         <Button label={"Post your feed"} small onClick={handleCreateNewFeed} icon={IoCreateOutline}/>
@@ -74,8 +79,7 @@ const Feeds = () => {
       </div>
       )
   }
-  if(error)
-    return <div>Error:{error}</div>
+ 
   
   return (
     <section className="bg-gray-50 min-h-screen"> 
@@ -85,19 +89,19 @@ const Feeds = () => {
           <UserMessage selectedUserId={selectedUserId} onBack={handleBackToList} userId={userId} 
           selectedUserName={selectedUserName}/>
         ) : (
-          <>
-            <ChatHeader/>
             <UserList  
             onUserClick={onUserClick}
             /> 
-          </>
         )}
       </Sheet>
      
-      <div className='w-full flex items-center justify-end px-2 h-20 mx-auto md:px-20 lg:px-40'>
+      <div className='w-full flex items-center justify-around px-2 py-5 mx-auto md:px-4 lg:px-28 flex-wrap gap-3'>
       <div className='w-48'>
         <Button label={"Post your feed"} small onClick={handleCreateNewFeed} icon={IoCreateOutline}/>
         </div> 
+        <div className='w-48'>
+        <Button label={"Message"} small onClick={()=>{setIsSheetOpen(true)}} icon={FaRegMessage }/>
+        </div>
       </div>
     
      <div className='space-y-4 mx-2'>

@@ -5,8 +5,7 @@ import axios from '../../utils/AxiosConfig';
 import {toast} from 'react-toastify'
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../redux/slices/modalSlice';
-import { fetchCurrentUser } from '../../redux/slices/authSlice';
-import { useNavigate } from 'react-router-dom';
+
 
 const EmployerModal = () => {
   const dispatch=useDispatch()

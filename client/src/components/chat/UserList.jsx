@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from '../../utils/AxiosConfig'
+import ChatHeader from './ChatHeader';
+import { useSelector } from 'react-redux';
 const UserList = ({ onUserClick}) => {
 
+        const userId=useSelector(state=>state.auth.user._id)
         const [messagedUsers, setMessagedUsers] = useState([]);
         const [loading, setLoading] = useState(true);
         const [error, setError] = useState(null);
@@ -11,8 +14,8 @@ const UserList = ({ onUserClick}) => {
             try {
               setLoading(true);
               const response = await axios.get('/chat/messaged-users');
-              console.log("message users list",response)
-              setMessagedUsers(response.data);
+              const users=response?.data.filter(user=>(user._id!==userId))
+              setMessagedUsers(users);
               setLoading(false);
             } catch (err) {
               console.error('Error fetching messaged users:', err);
@@ -26,6 +29,8 @@ const UserList = ({ onUserClick}) => {
       
    
     return (
+      <div>
+        <ChatHeader/>
         <div>
             {messagedUsers.map((user) => (
                 <div className='w-full border border-y-fuchsia-200 px-2 py-1 h-20 flex items-center
@@ -37,7 +42,7 @@ const UserList = ({ onUserClick}) => {
                 </div>
             ))}
         </div>
-
+   </div>
     )
 }
 

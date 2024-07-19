@@ -11,6 +11,7 @@ import VerifyPhoneModal from './components/Modals/VerifyPhone.jsx'
 import { ToastContainer } from 'react-toastify'
 import PostJobModal from './components/Modals/PostJobModal.jsx'
 import PostFeedModal from './components/Modals/PostFeed.jsx'
+import NotificationModal from './components/Modals/NotificationModal.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}> 
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <VerifyPhoneModal/>
       <PostJobModal/>
       <PostFeedModal/>
+      <NotificationModal/>
       <App />
       </React.StrictMode>
    </Provider>
