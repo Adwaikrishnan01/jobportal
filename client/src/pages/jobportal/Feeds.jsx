@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import UserFeed from '../components/UserFeed'
+import UserFeed from '../../components/UserFeed'
 import axios from 'axios';
-import { API_URL } from '../utils/API';
-import Button from '../components/Button';
+import { API_URL } from '../../utils/API';
+import Button from '../../components/Button';
 import { IoCreateOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '../redux/slices/modalSlice';
-import Sheet from '../components/Sheet';
-import UserList from '../components/chat/UserList';
-import UserMessage from '../components/chat/UserMessage';
+import { openModal } from '../../redux/slices/modalSlice';
+import Sheet from '../../components/Sheet';
+import UserList from '../../components/chat/UserList';
+import UserMessage from '../../components/chat/UserMessage';
 import { FaRegMessage } from "react-icons/fa6";
 const Feeds = () => {
   const [feeds, setFeeds] = useState([]);

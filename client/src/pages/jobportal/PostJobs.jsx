@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Input from '../components/Input.jsx'
-import axios from '../utils/AxiosConfig.js'
+import Input from '../../components/Input.jsx'
+import axios from '../../utils/AxiosConfig.js'
 
 const createJobPostingAction = async (formData) => {
   try {

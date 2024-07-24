@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCurrentUser, loginUser } from '../redux/slices/authSlice';
-import { login} from '../services/authService.jsx';
-import Input from '../components/Input.jsx';
-import Button from '../components/Button.jsx';
+import { fetchCurrentUser, loginUser } from '../../redux/slices/authSlice.js';
+import { login} from '../../services/authService.jsx';
+import Input from '../../components/Input.jsx';
+import Button from '../../components/Button.jsx';
 import { useNavigate } from 'react-router-dom';
-import GoogleLogin from '../components/GoogleLoginbtn.jsx'
+import GoogleLogin from '../../components/GoogleLoginbtn.jsx'
 import { toast } from 'react-toastify';
 
 
@@ -21,7 +21,7 @@ const Login = () => {
         if (fetchedUser.payload.initial_login === true) {
           navigate('/onboarding');
         } else {
-          navigate('/');
+          navigate('/jobs');
         }
       });
     }

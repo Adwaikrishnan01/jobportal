@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import Button from '../components/Button'
-import Input from '../components/Input'
+import Button from '../../components/Button'
+import Input from '../../components/Input'
 import { FcGoogle } from 'react-icons/fc'
 import {useNavigate} from 'react-router-dom'
-import CustomGoogleLogin from '../components/GoogleLoginbtn'
+import CustomGoogleLogin from '../../components/GoogleLoginbtn'
 import axios from 'axios'
-import { API_URL } from '../utils/API'
+import { API_URL } from '../../utils/API'
 import { toast } from 'react-toastify'
 
 

@@ -33,7 +33,7 @@ const navigate=useNavigate()
           },
         } );
             dispatch(loginUser({ user: data.user, isAuthenticated: true, accessToken: data.accessToken }));
-            navigate('/')
+            navigate('/jobs')
             
         } catch (error) {
           console.error('Error logging in with Google:', error);

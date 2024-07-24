@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchCurrentUser, logoutUser } from '../redux/slices/authSlice';
-import Button from '../components/Button';
+import { fetchCurrentUser, logoutUser } from '../../redux/slices/authSlice';
+import Button from '../../components/Button';
 import { FaRegEdit } from 'react-icons/fa';
-import { openModal } from '../redux/slices/modalSlice';
+import { openModal } from '../../redux/slices/modalSlice';
 import { toast } from 'react-toastify';
-import axios from '../utils/AxiosConfig'
-import UserJobView from '../components/UserJobView';
-import ResumeUpload from '../components/ResumeUpload';
-import { handleDownloadResume } from '../actions/Actions';
+import axios from '../../utils/AxiosConfig'
+import UserJobView from '../../components/UserJobView';
+import ResumeUpload from '../../components/ResumeUpload';
+import { handleDownloadResume } from '../../actions/Actions';
 
 const UserProfile = () => {
   const dispatch = useDispatch();

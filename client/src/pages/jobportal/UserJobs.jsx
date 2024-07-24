@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { IoMdAdd } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
-import JobCard from '../components/JobCard';
-import SkeletonJobCard from '../components/loading/SkeletonJobCard';
-import EmptyState from '../components/EmptyState';
-import axios from '../utils/AxiosConfig';
-import Button from '../components/Button';
-import { openModal } from '../redux/slices/modalSlice';
+import JobCard from '../../components/JobCard';
+import SkeletonJobCard from '../../components/loading/SkeletonJobCard';
+import EmptyState from '../../components/EmptyState';
+import axios from '../../utils/AxiosConfig';
+import Button from '../../components/Button';
+import { openModal } from '../../redux/slices/modalSlice';
 import { useNavigate } from 'react-router-dom';
 
 

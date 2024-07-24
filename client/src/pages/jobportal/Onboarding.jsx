@@ -1,9 +1,9 @@
 import React from 'react'
-import Button from '../components/Button'
+import Button from '../../components/Button'
 import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '../redux/slices/modalSlice';
+import { openModal } from '../../redux/slices/modalSlice';
 import { useNavigate } from 'react-router-dom';
-import axios from '../utils/AxiosConfig'
+import axios from '../../utils/AxiosConfig'
 const Onboarding = () => {
     const { user } = useSelector((state) => state.auth);
     const dispatch=useDispatch()
@@ -12,7 +12,7 @@ const Onboarding = () => {
         try{
             const response=await axios.put('/initial')
             if(response.status===200){
-                navigate('/')
+                navigate('/jobs')
             }
         }catch(error){
             console.log(error)

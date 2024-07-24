@@ -16,5 +16,5 @@ export const googleLogin = async () => {
 
 export const logout = ({dispatch,navigate}) => {
   dispatch(logoutUser())
-  navigate('/')
+  navigate('/jobs')
 };

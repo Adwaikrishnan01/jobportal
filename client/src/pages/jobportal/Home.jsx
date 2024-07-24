@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import JobListings from '../components/JobListings'
-import Sidebar from '../components/sidebar/SideBar'
+import JobListings from '../../components/JobListings'
+import Sidebar from '../../components/sidebar/SideBar'
 import 'react-toastify/dist/ReactToastify.css';
-import { API_URL } from '../utils/API';
+import { API_URL } from '../../utils/API';
 import axios from 'axios'
 
 

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import axios from '../utils/AxiosConfig';
+import axios from '../../utils/AxiosConfig';
 import { toast } from 'react-toastify';
-import { handleDownloadResume } from '../actions/Actions';
-import Button from '../components/Button';
-import useDashBoardCounts from '../hooks/useDashBoardCounts';
+import { handleDownloadResume } from '../../actions/Actions';
+import Button from '../../components/Button';
+import useDashBoardCounts from '../../hooks/useDashBoardCounts';
 
 const JobApplicants = () => {
   const [applicants, setApplicants] = useState([]);
