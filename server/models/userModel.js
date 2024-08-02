@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['employer', 'candidate'],
+      enum: ['employer', 'candidate','admin'],
       default: 'candidate',
     },
     // Fields for employer
@@ -74,10 +74,6 @@ const userSchema = new mongoose.Schema(
     },
     resume: {
       type: String, 
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false
     },
   },
   { timestamps: true }

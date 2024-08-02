@@ -23,12 +23,24 @@ const Sidebar = ({user}) => {
             route:"/admin/managejobs",
             icon: '💼'
         },
+        {
+            id: 4,
+            name: "My Account",
+            route: "/admin/myaccount",
+            icon: '👤'
+        },
+        {
+            id: 5,
+            name: "Settings",
+            route: "/admin/settings",
+            icon: '⚙️'
+        },
     ]
   return (
 
-    <div className='lg:w-1/6 md:1/3 h-dvh bg-gray-100 md:fixed'>
-        <div className="w-full flex items-center justify-center p-4 rounded-full">
-            <img src='/avatar.jpg' alt='img' className='w-1/2 rounded-md'/>
+    <div className='lg:w-1/6 md:1/3 bg-gray-100 min-h-screen border border-r-gray-300'>
+        <div className="w-full flex items-center justify-center px-10 py-4 rounded-full">
+            <img src='/avatar.jpg' alt='img' className='w-1/2 rounded-full bg-cover'/>
         </div>
         <div className='text-sm text-center'>{user.name}</div>
         

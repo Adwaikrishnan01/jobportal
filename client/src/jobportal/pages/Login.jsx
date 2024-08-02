@@ -18,7 +18,7 @@ const Login = () => {
   useEffect(() => {
     if (isAuthenticated &&  user) {
       dispatch(fetchCurrentUser()).then((fetchedUser) => {
-        if(fetchedUser.payload.isAdmin === true){
+        if(fetchedUser.payload.role === 'admin'){
           navigate('/admin/dashboard')
         }
         if(fetchedUser.payload.isAdmin === false){
@@ -29,7 +29,7 @@ const Login = () => {
         }}
       });
     }
-  }, [isAuthenticated, status, user, dispatch, navigate]);
+  }, [isAuthenticated, user, dispatch, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

@@ -1,5 +1,6 @@
 import User from '../models/userModel.js';
 import Job from '../models/jobModel.js'; 
+import Application from '../models/applicationModel.js';
 const adminController = {
   getUsers: async (req, res) => {
     try {
@@ -166,7 +167,7 @@ const adminController = {
 
   getJobStats: async (req, res) => {
     try {
-      // Get daily job counts
+      
       const stats = await Job.aggregate([
         {
           $group: {
@@ -210,6 +211,32 @@ const adminController = {
       res.status(500).json({ message: error.message });
     }
   },
+  getApplicationStats : async (req, res) => {
+    try {
+      const stats = await Application.aggregate([
+        {
+          $group: {
+            _id: "$status",
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+  
+      const formattedStats = {
+        pending: 0,
+        accepted: 0,
+        rejected: 0
+      };
+  
+      stats.forEach(stat => {
+        formattedStats[stat._id] = stat.count;
+      });
+  
+      res.json(formattedStats);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 };
 
 export default adminController;

@@ -8,8 +8,6 @@ import { toast } from 'react-toastify';
 const ManageJobs = () => {
   const [jobs, setJobs] = useState([]);
   const {user}=useSelector(state=>state.auth)
-  console.log(jobs)
-
   useEffect(() => {
     const fetchJobs = async () => {
       try {

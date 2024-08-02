@@ -11,13 +11,13 @@ const PrivateRoute = ({ children, adminOnly = false }) => {
 
   if (user) {
     
-    if (adminOnly && !user.isAdmin) {
+    if (adminOnly && !user.role==='admin') {
       toast.error("Access denied. Admin only.");
       return <Navigate to="/jobs" replace />;
     }
     
 
-    if (adminOnly && user.isAdmin) {
+    if (adminOnly && user.role==='admin') {
       return children; 
     }
     return children;
