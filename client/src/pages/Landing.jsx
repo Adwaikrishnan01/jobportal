@@ -1,8 +1,11 @@
-import React from 'react'
-import Button from '../components/Button'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Button from '../jobportal/components/ui/Button'
 
 const Landing = () => {
+  useEffect(() => {
+    document.title = "Landing";
+  }, []);
     const navigate=useNavigate()
   return (
     <section className='h-screen bg-gray-100'>
@@ -15,7 +18,6 @@ const Landing = () => {
         <Button label={"Jobportal"} onClick={()=>{navigate('/jobs')}} outline/>
         <Button label={"Studyabroad"} onClick={()=>{navigate('/studyabroad')}} outline/>
         </div>
-   
     </section>
   )
 }

@@ -75,6 +75,10 @@ const userSchema = new mongoose.Schema(
     resume: {
       type: String, 
     },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    },
   },
   { timestamps: true }
 );

@@ -6,6 +6,7 @@ import userRoute from './routes/userRoute.js'
 import jobRoute from './routes/jobRoute.js'
 import feedRoute from './routes/feedRoute.js'
 import chatRoute from './routes/chatRoute.js'
+import adminRoute from './routes/adminRoute.js'
 import passport from './passport-config.js';
 import session from 'express-session';
 import connectDB from "./dbconfig.js";
@@ -51,6 +52,7 @@ app.set('views', './views');
 app.use(userRoute);
 app.use('/jobs',jobRoute)
 app.use('/feeds',feedRoute)
+app.use('/admin',adminRoute);
 
 server.listen(port, () => {    
   console.log(`Server is running on port ${port}`); 
