@@ -46,7 +46,8 @@ const Sidebar = ({user}) => {
         
         <div className='mt-4'>
             {sidebarlist.map(item=>(
-                <div className='px-4 py-3 hover:bg-fuchsia-300 cursor-pointer border border-t-slate-300 flex gap-2'
+                <div className='px-4 py-3 hover:bg-fuchsia-200 cursor-pointer border
+                 border-t-slate-300 flex gap-2'
                 key={item.id}
                 onClick={()=>{navigate(`${item.route}`)}}><p>{item.icon}</p>{item.name}</div>
             ))}

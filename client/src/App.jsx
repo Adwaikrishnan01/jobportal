@@ -17,6 +17,7 @@ import CountryInfo from './studyabroad/pages/CountryInfo.jsx';
 import ManageUsers from './jobportal/admin/ManageUsers.jsx';
 import ManageJobs from './jobportal/admin/ManageJobs.jsx';
 import AdminDashboard from './jobportal/admin/AdminDashboard.jsx';
+import AdminAccount from './jobportal/admin/AdminAccount.jsx';
 
 const JobPortalRoutes = () => {
   return (
@@ -35,7 +36,7 @@ const JobPortalRoutes = () => {
         <Route path="/admin/dashboard" element={<PrivateRoute adminOnly={true}> <AdminDashboard /></PrivateRoute>} />
         <Route path="/admin/manageusers" element={<PrivateRoute adminOnly={true}> <ManageUsers /></PrivateRoute>} />
         <Route path="/admin/managejobs" element={<PrivateRoute adminOnly={true}> <ManageJobs /></PrivateRoute>} />
-        
+        <Route path="/admin/myaccount" element={<PrivateRoute adminOnly={true}> <AdminAccount /></PrivateRoute>} />
       </Routes>
     </>
   );

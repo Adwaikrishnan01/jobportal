@@ -48,8 +48,26 @@ export const createJobPosting = async (req, res) => {
   //get all jobs
   export const getAllJobPostings = async (req, res) => {
     try {
-      const jobPostings = await Jobs.find({}).populate('createdBy','-password -age -resume -skills'); 
-      res.status(200).json(jobPostings);
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 5;
+      const skip = (page - 1) * limit;
+  
+      // Apply any filters here
+      const filterCriteria = { /* ... */ };
+  
+      const jobPostings = await Jobs.find(filterCriteria)
+        .populate('createdBy', '-password -age -resume -skills')
+        .skip(skip)
+        .limit(limit + 1); // Fetch one extra to determine if there are more
+  
+      const hasMore = jobPostings.length > limit;
+      const jobsToSend = hasMore ? jobPostings.slice(0, -1) : jobPostings;
+  
+      res.status(200).json({
+        jobPostings: jobsToSend,
+        currentPage: page,
+        hasMore: hasMore
+      });
     } catch (error) {
       console.error('Error fetching job postings:', error);
       res.status(500).json({ message: 'Error fetching job postings', error: error.message });

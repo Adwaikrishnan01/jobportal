@@ -36,7 +36,7 @@ const EmployerModal = () => {
       if (response.status === 200) {
         toast.success("User updated successfully")
         dispatch(closeModal('employer'))
-        window.location.href = '/';
+        window.location.href = '/jobs';
         
       } else {
         console.error('Error updating user role:', response.statusText);

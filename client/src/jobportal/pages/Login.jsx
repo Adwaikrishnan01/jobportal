@@ -21,7 +21,7 @@ const Login = () => {
         if(fetchedUser.payload.role === 'admin'){
           navigate('/admin/dashboard')
         }
-        if(fetchedUser.payload.isAdmin === false){
+        if(fetchedUser.payload.role !== 'admin'){
         if (fetchedUser.payload.initial_login === true) {
           navigate('/onboarding');
         } else {

@@ -42,7 +42,7 @@ const AdminDashboard = () => {
         accepted: 0,
         rejected: 0,
       });
-
+      const [totalApplications,setTotalApplications]=useState()
 
     useEffect(() => {
       const fetchUserStats = async () => {
@@ -100,9 +100,9 @@ const AdminDashboard = () => {
       const fetchApplicationStats = async () => {
         try {
           const response = await axios.get('/admin/application-stats');
-         
-          const data = response.data 
-          console.log(data)
+          const data = response.data.stats
+          const totalApplications=response.data.count
+          setTotalApplications(totalApplications)
           setApplicationStats(data);
         } catch (error) {
           console.error('Error fetching application stats:', error);
@@ -206,18 +206,18 @@ const AdminDashboard = () => {
       <div className="mb-4 h-96 w-96">
         <Pie data={pieChartData} options={applicationOptions} />
       </div>
-      <div className="grid grid-cols-3 gap-4 text-center">
-        <div className="bg-orange-200 p-1 rounded">
+      <div className="grid grid-cols-3 gap-4 text-center text-white">
+        <div className="bg-orange-500 p-1 rounded">
           <p className="font-semibold">Pending</p>
-          <p className="text-md">{applicationStats.pending}</p>
+          <p className="text-md">{((applicationStats.pending * 100) / totalApplications).toFixed(1)} %</p>
         </div>
-        <div className="bg-green-200 p-1 rounded">
+        <div className="bg-green-600 p-1 rounded">
           <p className="font-semibold">Accepted</p>
-          <p className="text-md">{applicationStats.accepted}</p>
+          <p className="text-md">{((applicationStats.accepted * 100) / totalApplications).toFixed(1)} %</p>
         </div>
-        <div className="bg-red-300 p-1 rounded">
+        <div className="bg-red-600 p-1 rounded">
           <p className="font-semibold">Rejected</p>
-          <p className="text-md">{applicationStats.rejected}</p>
+          <p className="text-md">{((applicationStats.rejected * 100) / totalApplications).toFixed(1)} %</p>
         </div>
       </div>
     </div>

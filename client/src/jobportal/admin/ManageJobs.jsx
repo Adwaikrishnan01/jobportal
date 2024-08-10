@@ -30,10 +30,10 @@ const ManageJobs = () => {
     }
   };
   return(
-       <div className='md:flex bg-fuchsia-50'>
+       <div className='md:flex bg-fuchsia-50 w-full'>
          <Sidebar user={user}/>
-        <div className="px-4 container">
-          <h1 className="text-2xl font-semibold my-6">Job Management</h1>
+        <div className="px-4 w-5/6 mx-auto">
+          <h1 className="text-xl my-6 from-neutral-800">Job Management</h1>
           <JobTable jobs={jobs} onDeleteJob={deleteJob} />
         </div>   
       </div>

@@ -9,7 +9,7 @@ import { logout } from "../../services/authService.jsx";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate=useNavigate()
-  
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [nav, setNav] = useState(false);
   const handleNav = () => {
     setNav(!nav);
@@ -30,7 +30,7 @@ const Navbar = () => {
     { id: 4, text: 'My Jobs', link:'/userjobs' },
     { id: 5, text: 'Logout', link:'/jobs', onClick:logoutHandler},
   ];
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  
   
   useEffect(() => {
     if (isAuthenticated) {
@@ -45,7 +45,9 @@ const Navbar = () => {
         {
           <div className="hidden md:flex md:items-center">
             <div className="mx-8 text-fuchsia-900 text-lg space-x-5">
-              <Link to='/' className=" hover:text-fuchsia-500 font-serif">Home</Link>
+              <Link to='/jobs' className=" hover:text-fuchsia-500 font-serif">Home</Link>
+              {isAuthenticated ? user?.role==='admin'&& 
+              <Link to='/admin/dashboard' className=" hover:text-fuchsia-500 font-serif">Admin</Link>:''}
               <Link to='/feeds' className=" hover:text-fuchsia-500 font-serif">Feeds</Link></div>
             <UserMenu user={user} />
           </div>

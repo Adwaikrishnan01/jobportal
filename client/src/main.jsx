@@ -12,6 +12,7 @@ import { ToastContainer } from 'react-toastify'
 import PostJobModal from './jobportal/components/Modals/PostJobModal.jsx'
 import PostFeedModal from './jobportal/components/Modals/PostFeed.jsx'
 import NotificationModal from './jobportal/components/Modals/NotificationModal.jsx'
+import ConfirmationModal from './jobportal/components/Modals/ConfirmationModal.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}> 
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <PostJobModal/>
       <PostFeedModal/>
       <NotificationModal/>
+      <ConfirmationModal/>
       <App />
       </React.StrictMode>
    </Provider>

@@ -64,6 +64,24 @@ const adminController = {
     }
   },
 
+  deleteAdmin: async (req, res) => {
+    try {
+      const userId = req.user.id;
+
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      await Job.deleteMany({ createdBy: userId });
+     
+      await User.findByIdAndDelete(userId);
+
+      res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting user', error: error.message });
+    }
+  },
+
   getAllJobs: async (req, res) => {
     try {
       // Pagination parameters
@@ -221,7 +239,7 @@ const adminController = {
           }
         }
       ]);
-  
+      
       const formattedStats = {
         pending: 0,
         accepted: 0,
@@ -231,10 +249,59 @@ const adminController = {
       stats.forEach(stat => {
         formattedStats[stat._id] = stat.count;
       });
-  
-      res.json(formattedStats);
+      const totalApplications=await Application.countDocuments()
+      res.json({stats:formattedStats,count:totalApplications});
     } catch (error) {
       res.status(500).json({ message: error.message });
+    }
+  },
+  changeRole: async (req, res) => {
+    try {
+      const userId = req.params.id
+      console.log(userId)
+   
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      if (user.role === 'admin') {
+        return res.status(200).json({ message: 'User is already an admin' });
+      }
+  
+      await User.findByIdAndUpdate(userId, { role: 'admin' });
+  
+      res.status(200).json({ message: 'User role updated to admin successfully' });
+    } catch (error) {
+      console.error('Error changing user role:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+  searchUserByEmail : async (req, res) => {
+    try {
+      const { email } = req.query;
+  
+      if (!email) {
+        return res.status(400).json({ message: 'Email is required for search' });
+      }
+  
+      const user = await User.findOne({ email: email.toLowerCase() });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Return user data (excluding sensitive information)
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      });
+  
+    } catch (error) {
+      console.error('Error searching user:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   }
 };
