@@ -9,6 +9,7 @@ import EmployerModal from './jobportal/components/Modals/EmployerModal.jsx'
 import UpdateProfileModal from './jobportal/components/Modals/ProfileUpdate.jsx'
 import VerifyPhoneModal from './jobportal/components/Modals/VerifyPhone.jsx'
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import PostJobModal from './jobportal/components/Modals/PostJobModal.jsx'
 import PostFeedModal from './jobportal/components/Modals/PostFeed.jsx'
 import NotificationModal from './jobportal/components/Modals/NotificationModal.jsx'
