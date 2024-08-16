@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import EmployerModal from './jobportal/components/Modals/EmployerModal.jsx'
 import UpdateProfileModal from './jobportal/components/Modals/ProfileUpdate.jsx'
 import VerifyPhoneModal from './jobportal/components/Modals/VerifyPhone.jsx'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify';
 import PostJobModal from './jobportal/components/Modals/PostJobModal.jsx'
 import PostFeedModal from './jobportal/components/Modals/PostFeed.jsx'
 import NotificationModal from './jobportal/components/Modals/NotificationModal.jsx'

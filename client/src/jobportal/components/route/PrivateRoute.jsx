@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
+import {toast} from 'react-toastify';
 import { Navigate } from 'react-router-dom';
 const PrivateRoute = ({ children, adminOnly = false }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
